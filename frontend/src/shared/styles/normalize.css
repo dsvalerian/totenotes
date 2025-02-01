@@ -21,7 +21,7 @@ img, picture, video, canvas, svg {
     max-width: 100%;
 }
 
-/* 6. Inherit fonts for form controls */
+/* 6. Inherit fonts for forms controls */
 input, button, textarea, select {
     font: inherit;
 }

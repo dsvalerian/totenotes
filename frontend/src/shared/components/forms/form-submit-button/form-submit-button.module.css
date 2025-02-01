@@ -1,0 +1,17 @@
+.submit {
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    text-align: center;
+    background: rgb(var(--color-accent));
+    color: white;
+    font-weight: var(--fw-normal);
+    border: none;
+    border-radius: var(--radius-small);
+    width: 100%;
+    transition-duration: var(--transition-time-medium);
+}
+
+.submit:hover {
+    cursor: pointer;
+    background: rgba(var(--color-accent), 0.9);
+}

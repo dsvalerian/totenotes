@@ -1,0 +1,27 @@
+.button {
+    height: 2.5rem;
+    width: 100%;
+    border-radius: var(--radius-small);
+    border: none;
+    transition-duration: var(--transition-time-medium);
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.normal {
+    background: rgb(var(--color-accent));
+    color: white;
+}
+
+.outline {
+    background: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(var(--color-accent));
+    color: rgb(var(--color-accent));
+}
+
+.outline:hover {
+    background: rgb(var(--color-accent));
+    color: white;
+}
