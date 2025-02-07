@@ -8,11 +8,11 @@ const SignupPanel = () => {
         <form className={styles['signup-form']} onSubmit={SignupPanel}>
           <h1 className={styles['header-title']}>Sign up</h1>
           <fieldset className={styles['input-fields']}>
-            <InputField form={true} form-type={'text'} label={'First name'} />
-            <InputField form={true} form-type={'text'} label={'Last name'} />
-            <InputField form={true} form-type={'email'} label={'Email'} />
-            <InputField form={true} form-type={'password'} label={'Password'} />
-            <InputField form={true} form-type={'password'} label={'Confirm password'} />
+            <InputField form={true} formType={'text'} label={'First name'} />
+            <InputField form={true} formType={'text'} label={'Last name'} />
+            <InputField form={true} formType={'email'} label={'Email'} />
+            <InputField form={true} formType={'password'} label={'Password'} />
+            <InputField form={true} formType={'password'} label={'Confirm password'} />
           </fieldset>
           <div className={styles['submit-wrapper']}>
             <Button text={'Sign up'} form={true} />
