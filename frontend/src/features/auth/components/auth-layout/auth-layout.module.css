@@ -1,7 +1,13 @@
 .auth-layout {
-    height: 100vh;
-    background: var(--color-background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 1rem;
+    overflow: visible;
+}
+
+@media (min-width: 600px) {
+    .auth-layout {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

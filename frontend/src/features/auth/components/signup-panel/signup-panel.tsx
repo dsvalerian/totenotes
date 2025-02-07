@@ -1,34 +1,31 @@
 import styles from './signup-panel.module.css';
-import FormTextInput from '../../../../shared/components/forms/form-text-input/form-text-input.tsx';
-import FormSubmitButton from '../../../../shared/components/forms/form-submit-button/form-submit-button.tsx';
 import Button from '../../../../shared/components/ui/button/button.tsx';
+import InputField from '../../../../shared/components/ui/input-field/input-field.tsx';
 
 const SignupPanel = () => {
   return (
-      <section className={styles['container']}>
-        <div className={styles['login-panel']}>
-          <h2>Already have an account?</h2>
-          <p>Login to continue where you left off.</p>
-          <Button text={'Login'} variant={'outline'} />
-        </div>
-        <form className={styles['form-panel']}>
-          <h1 className={`${styles['full-width']} ${styles['main-title']}`}>Sign Up</h1>
-          <FormTextInput id={'firstname'} label={'First name'} placeholder={'Your first name'} required={true} />
-          <FormTextInput id={'lastname'} label={'Last name'} placeholder={'Your last name'} required={true} />
-          <div className={styles['full-width']}>
-            <FormTextInput id={'email'} label={'Email'} placeholder={'Your email address'} type={'email'} required={true} />
-          </div>
-          <div className={styles['full-width']}>
-            <FormTextInput id={'password'} label={'Password'} placeholder={'Enter a password'} type={'password'} required={true} />
-          </div>
-          <div className={styles['full-width']}>
-            <FormTextInput id={'confirmpassword'} label={'Confirm password'} placeholder={'Enter the same password'} type={'password'} required={true} />
-          </div>
-          <div className={`${styles['full-width']} ${styles['button-container']}`}>
-            <FormSubmitButton text={'Sign Up'} />
+      <article className={styles['main-panel']}>
+        <form className={styles['signup-form']} onSubmit={SignupPanel}>
+          <h1 className={styles['header-title']}>Sign up</h1>
+          <fieldset className={styles['input-fields']}>
+            <InputField form={true} form-type={'text'} label={'First name'} />
+            <InputField form={true} form-type={'text'} label={'Last name'} />
+            <InputField form={true} form-type={'email'} label={'Email'} />
+            <InputField form={true} form-type={'password'} label={'Password'} />
+            <InputField form={true} form-type={'password'} label={'Confirm password'} />
+          </fieldset>
+          <div className={styles['submit-wrapper']}>
+            <Button text={'Sign up'} form={true} />
           </div>
         </form>
-      </section>
+        <section className={styles['login-redirect']}>
+          <div className={styles['login-redirect-content']}>
+            <h2 className={styles['header-title']}>Have an account?</h2>
+            <p>Login to continue where you left off</p>
+            <Button text={'Login'} variant={'outline'} />
+          </div>
+        </section>
+      </article>
   );
 };
 

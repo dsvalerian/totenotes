@@ -2,11 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 :root {
-    --color-primary: 235, 214, 40;
-    --color-secondary: #7eeef3;
-    --color-accent: 89, 120, 240; /* #5978f0;*/
-    --color-text-base: #211d03;
-    --color-background: #fdfdee;
+    --clr-primary-500-hsl: 39, 100%, 63%;
+    --clr-secondary-500-hsl: 338, 85%, 46%;
+    --clr-accent-500-hsl: 178, 60%, 32%;
+
+    --clr-primary-500: hsl(var(--clr-primary-500-hsl));
+    --clr-secondary-500: hsl(var(--clr-secondary-500-hsl));
+    --clr-accent-500: hsl(var(--clr-accent-500-hsl));
+
+    --clr-neutral-50: hsl(38, 8%, 97%);
+    --clr-neutral-100: hsl(36, 8%, 90%);
+    --clr-neutral-400: hsl(36, 8%, 61%);
+    --clr-neutral-900: hsl(39, 8%, 12%);
 
     --ff-primary: "Poppins";
     --ff-accent: "Rubik";
@@ -20,7 +27,7 @@
     --fs-800: 1.5rem;
 
     --radius-small: 7px;
-    --radius-large: 50px;
+    --radius-large: 40px;
 
     --shadow-size-large: 30px;
 
@@ -32,5 +39,10 @@ body {
     font-family: var(--ff-primary), sans-serif;
     font-weight: var(--fw-normal);
     font-size: var(--fs-400);
-    color: var(--color-text-base);
+    color: var(--clr-neutral-900);
+}
+
+*, *::before, *::after {
+    /* just for debugging */
+    /*border: 2px solid lime;*/
 }
