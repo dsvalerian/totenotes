@@ -1,5 +1,5 @@
 import express from 'express';
-import authRouter from './routers/auth-router.js';
+import authRouter from './auth/auth-router.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
@@ -18,13 +18,13 @@ else {
   process.exit(1);
 }
 
-// Create the app
+// Create the app, setting up routes
 const app = express();
-const PORT = process.env.SERVER_PORT || 3000;
-
 app.use(express.json());
 app.use('/api/auth', authRouter);
 
+// Start listening
+const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server started, listening on port ${PORT}`);
 });
