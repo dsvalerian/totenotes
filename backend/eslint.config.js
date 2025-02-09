@@ -11,6 +11,10 @@ export default tseslint.config(
     },
     rules: {
       'semi': 'error',
+      'prefer-destructuring': ['error', {
+        'array': true,
+        'object': true,
+      }],
     },
   },
 )
