@@ -1,0 +1,37 @@
+.submit-wrapper {
+    width: 100%;
+    max-width: 13rem;
+}
+
+.header-title {
+    font-size: var(--fs-800);
+}
+
+.inline-options {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.forgot-password {
+    color: var(--clr-neutral-500);
+}
+
+.forgot-password:hover {
+    cursor: pointer;
+}
+
+@media (min-width: 350px) {
+    .inline-options {
+        width: 100%;
+        padding: 0 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .forgot-password {
+        text-align: right;
+    }
+}

@@ -1,25 +1,40 @@
 import styles from './button.module.css';
+import {Link} from 'react-router-dom';
 
-type ButtonProps = {
+interface CommonButtonProps {
   text: string,
   variant?: 'solid' | 'outline',
-  form?: boolean,
+}
+
+type ConditionalButtonProps = | {
+  type?: 'normal' | 'form',
+  to?: never
+} | {
+  type: 'route-link',
+  to: string
 };
 
-const Button = ({text, variant, form}: ButtonProps) => {
-  if (form) {
-    return (
-      <input className={`${styles['button']} ${styles[variant || 'solid']}`} value={text} type={'submit'} />
-    );
-  }
-  else {
-    return (
-        <button className={`${styles['button']} ${styles[variant || 'solid']}`}>
-          {text}
-        </button>
-    );
-  }
+type ButtonProps = CommonButtonProps & ConditionalButtonProps;
 
+const Button = ({text, variant, type, to}: ButtonProps) => {
+  const classNames = `${styles['button']} ${styles[variant || 'solid']}`;
+
+  switch (type || 'normal') {
+    case 'normal':
+      return (
+          <input className={classNames} value={text} type={'submit'} />
+      );
+    case 'form':
+      return (
+          <button className={classNames}>
+            {text}
+          </button>
+      );
+    case 'route-link':
+      return (
+          <Link className={`${classNames} ${styles['link']}`} to={to || '/'}>{text}</Link>
+      );
+  }
 };
 
 export default Button;
