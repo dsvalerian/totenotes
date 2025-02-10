@@ -23,6 +23,11 @@
     cursor: pointer;
 }
 
+.link {
+    text-decoration: none;
+    color: var(--clr-neutral-500);
+}
+
 @media (min-width: 350px) {
     .inline-options {
         width: 100%;

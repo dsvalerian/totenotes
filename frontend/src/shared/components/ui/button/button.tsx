@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 interface CommonButtonProps {
   text: string,
-  variant?: 'solid' | 'outline',
+  variant?: 'solid' | 'outline'
 }
 
 type ConditionalButtonProps = | {
