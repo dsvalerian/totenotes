@@ -1,52 +1,84 @@
 import User from './user-model.js';
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
+import {ResponseBody} from '../server.js';
 
-export const registerUser = async (request: Request, response: Response) => {
-  console.info(`Registering user ${request.body.email}`);
+/**
+ * Register a new user.
+ * @param req The request.
+ * @param res The response.
+ */
+export const registerUser = async (req: Request, res: Response) => {
+  console.info(`Registering user ${req.body.email}`);
 
   // Check for existing user
-  const existingUser = await User.findOne({ email: request.body.email });
+  const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
-    console.info('User already exists');
-    return response.status(400).json({error: 'User already exists', email: existingUser.email});
+    const responseBody: ResponseBody = {
+      success: false,
+      message: 'User already exists'
+    };
+
+    console.info(responseBody.message);
+    return res.status(400).json(responseBody);
   }
 
   // Creating new user with hashed password
   const newUser = new User({
-    email: request.body.email,
-    password: await bcrypt.hash(request.body.password, 10)
+    email: req.body.email,
+    password: await bcrypt.hash(req.body.password, 10)
   });
 
   await newUser.save();
-  return response.status(201).json({message: 'User registered successfully', email: newUser.email});
+
+  const responseBody: ResponseBody = {
+    success: true,
+    message: `User ${newUser.email} registered successfully`,
+  };
+  return res.status(201).json(responseBody);
 };
 
-export const loginUser = async (request: Request, response: Response) => {
-  console.info(`Logging in user ${request.body.email}`);
+/**
+ * Authenticate a user.
+ * @param req The request.
+ * @param res The response.
+ */
+export const loginUser = async (req: Request, res: Response) => {
+  console.info(`Logging in user ${req.body.email}`);
 
   // Check for existing user
-  const existingUser = await User.findOne({email: request.body.email});
+  const existingUser = await User.findOne({email: req.body.email});
   if (!existingUser) {
-    console.info('User does not exist');
-    return response.status(401).json({error: 'User does not exist', email: request.body.email});
+    const responseBody: ResponseBody = {
+      success: false,
+      message: 'User does not exist'
+    };
+
+    console.info(responseBody.message);
+    return res.status(401).json(responseBody);
   }
 
   // Check for correct password
-  const passwordsMatch = await bcrypt.compare(request.body.password, existingUser.password);
+  const passwordsMatch = await bcrypt.compare(req.body.password, existingUser.password);
   if (passwordsMatch) {
     // Update the session to track user
-    request.session.user = existingUser.email;
-    return response.json({message: 'Logged in successfully'});
+    req.session.user = existingUser.email;
+
+    const responseBody: ResponseBody = {
+      success: true,
+      message: `User logged in successfully`,
+    };
+
+    console.info(responseBody.message);
+    return res.json(responseBody);
   }
   else {
-    console.info('Incorrect password provided');
-    return response.status(401).json({error: 'Incorrect password', email: request.body.email});
-  }
-};
+    const responseBody: ResponseBody = {
+      success: false,
+      message: `Incorrect password provided`
+    };
 
-export const authStatus = async (request: Request, response: Response) => {
-  return request.session.user
-      ? response.json({user: request.session.user})
-      : response.status(401).json({error: 'User not logged in'});
+    console.info(responseBody.message);
+    return res.status(401).json(responseBody);
+  }
 };

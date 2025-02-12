@@ -1,9 +1,13 @@
 import styles from './form.module.css';
-import {PropsWithChildren} from 'react';
+import {FormEventHandler, PropsWithChildren} from 'react';
 
-const AuthForm = ({children}: PropsWithChildren) => {
+interface FormProps {
+  onSubmit: FormEventHandler<HTMLFormElement>
+}
+
+const AuthForm = ({onSubmit, children}: PropsWithChildren<FormProps>) => {
   return (
-      <form className={styles['form']}>
+      <form className={styles['form']} onSubmit={onSubmit}>
         {children}
       </form>
   );

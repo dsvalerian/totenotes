@@ -3,13 +3,20 @@ import authRouter from './auth/auth-router.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import session from 'express-session';
-import { Request, Response } from 'express';
+import cors from 'cors';
+import defaultRouter from './default/default-router.js';
 
 // Augmenting express-session with custom object
 declare module 'express-session' {
   interface SessionData {
     user: string
   }
+}
+
+export interface ResponseBody {
+  success: boolean,
+  message: string,
+  data?: {someValue: string}
 }
 
 dotenv.config();
@@ -33,6 +40,7 @@ else {
 // Create the app
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'test-dev',
   saveUninitialized: false,
@@ -42,12 +50,9 @@ app.use(session({
   }
 }));
 
-app.get('/api/ping', (request: Request, response: Response) => {
-  return response.json({message: 'Server is running'});
-});
-
 // Registering routes
 app.use('/api/auth', authRouter);
+app.use('*', defaultRouter);
 
 // Start listening
 const PORT = process.env.SERVER_PORT || 3000;
