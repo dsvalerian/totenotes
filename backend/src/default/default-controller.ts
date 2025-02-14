@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
-import {ResponseBody} from '../server.js';
+import {Request, Response} from "express";
+import {ResponseBody} from "../server.js";
 
 /**
  * Default fallback to be used for unknown endpoints.

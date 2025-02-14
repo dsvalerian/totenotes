@@ -1,7 +1,7 @@
-import User from './user-model.js';
-import bcrypt from 'bcrypt';
-import {Request, Response} from 'express';
-import {ResponseBody} from '../server.js';
+import User from "./user-model.js";
+import bcrypt from "bcrypt";
+import {Request, Response} from "express";
+import {ResponseBody} from "../server.js";
 
 /**
  * Register a new user.
@@ -16,7 +16,7 @@ export const registerUser = async (req: Request, res: Response) => {
   if (existingUser) {
     const responseBody: ResponseBody = {
       success: false,
-      message: 'User already exists'
+      message: "User already exists"
     };
 
     console.info(responseBody.message);
@@ -51,7 +51,7 @@ export const loginUser = async (req: Request, res: Response) => {
   if (!existingUser) {
     const responseBody: ResponseBody = {
       success: false,
-      message: 'User does not exist'
+      message: "User does not exist"
     };
 
     console.info(responseBody.message);
@@ -66,7 +66,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const responseBody: ResponseBody = {
       success: true,
-      message: `User logged in successfully`,
+      message: "User logged in successfully",
     };
 
     console.info(responseBody.message);
@@ -75,7 +75,7 @@ export const loginUser = async (req: Request, res: Response) => {
   else {
     const responseBody: ResponseBody = {
       success: false,
-      message: `Incorrect password provided`
+      message: "Incorrect password provided"
     };
 
     console.info(responseBody.message);

@@ -8,7 +8,8 @@
     "clean": "rm -rf ./dist",
     "dev": "tsc --watch",
     "start": "node dist/server.js",
-    "auto-start": "nodemon dist/server.js"
+    "auto-start": "nodemon dist/server.js",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
