@@ -1,0 +1,11 @@
+.shopping-item {
+    list-style: none;
+    height: 3.5rem;
+    display: grid;
+    grid-template-columns: 5rem auto;
+    align-items: center;
+    padding: 0 2rem;
+    border-radius: var(--radius-large);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size: var(--fs-500);
+}

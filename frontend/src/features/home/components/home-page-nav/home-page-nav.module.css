@@ -1,0 +1,30 @@
+.nav {
+    background: var(--clr-primary-500);
+    min-width: 20rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    justify-content: space-between;
+}
+
+.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.footer {
+    font-size: var(--fs-600);
+    font-weight: var(--fw-semibold);
+}
+
+.title {
+    font-size: var(--fs-800);
+}
+
+.item-list {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    padding: 0;
+}

@@ -67,13 +67,13 @@ const SignupPanel = () => {
             />
           </fieldset>
           <div className={styles['submit-wrapper']}>
-            <Button text={'Sign up'} type={'form'} />
+            <Button label={'Sign up'} type={'form'} />
           </div>
         </Form>
         <AuthSidePanel>
           <h2 className={styles['header-title']}>Have an account?</h2>
           <p>Login to continue where you left off</p>
-          <Button text={'Login'} variant={'outline'} type={'route-link'} to={'/login'} />
+          <Button label={'Login'} variant={'outline'} type={'route-link'} to={'/login'} />
         </AuthSidePanel>
       </>
   );

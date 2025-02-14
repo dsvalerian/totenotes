@@ -14,13 +14,13 @@ const ForgotPasswordPanel = () => {
             <InputField form={true} formType={'email'} label={'Email'} required={true} />
           </fieldset>
           <div className={styles['submit-wrapper']}>
-            <Button text={'Submit'} type={'form'} />
+            <Button label={'Submit'} type={'form'} />
           </div>
         </Form>
         <AuthSidePanel>
           <h2 className={styles['header-title']}>Know your password?</h2>
           <p>Login to continue where you left off</p>
-          <Button text={'Login'} variant={'outline'} type={'route-link'} to={'/login'} />
+          <Button label={'Login'} variant={'outline'} type={'route-link'} to={'/login'} />
         </AuthSidePanel>
       </>
   );

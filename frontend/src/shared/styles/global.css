@@ -24,6 +24,7 @@
     --fw-bold: 700;
 
     --fs-400: 0.75rem;
+    --fs-500: 0.85rem;
     --fs-600: 1rem;
     --fs-800: 1.5rem;
 
@@ -41,6 +42,10 @@ body {
     font-weight: var(--fw-normal);
     font-size: var(--fs-400);
     color: var(--clr-neutral-900);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--ff-accent), 'sans-serif';
 }
 
 *, *::before, *::after {

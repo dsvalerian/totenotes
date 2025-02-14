@@ -2,7 +2,7 @@ import styles from './button.module.css';
 import {Link} from 'react-router-dom';
 
 interface CommonButtonProps {
-  text: string,
+  label: string,
   variant?: 'solid' | 'outline'
 }
 
@@ -16,23 +16,23 @@ type ConditionalButtonProps = | {
 
 type ButtonProps = CommonButtonProps & ConditionalButtonProps;
 
-const Button = ({text, variant, type, to}: ButtonProps) => {
+const Button = ({label, variant, type, to}: ButtonProps) => {
   const classNames = `${styles['button']} ${styles[variant || 'solid']}`;
 
   switch (type || 'normal') {
     case 'normal':
       return (
-          <input className={classNames} value={text} type={'submit'} />
+          <input className={classNames} value={label} type={'submit'} />
       );
     case 'form':
       return (
           <button className={classNames}>
-            {text}
+            {label}
           </button>
       );
     case 'route-link':
       return (
-          <Link className={`${classNames} ${styles['link']}`} to={to || '/'}>{text}</Link>
+          <Link className={`${classNames} ${styles['link']}`} to={to || '/'}>{label}</Link>
       );
   }
 };

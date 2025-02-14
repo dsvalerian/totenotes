@@ -5,7 +5,7 @@
 
 .main-panel {
     border-radius: var(--radius-large);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 var(--shadow-size-large) rgba(0, 0, 0, 0.3);
     width: 100%;
 }
 

@@ -60,13 +60,13 @@ const LoginPanel = () => {
             <Link className={styles['link']} to={'/forgotpassword'}>Forgot your password?</Link>
           </div>
           <div className={styles['submit-wrapper']}>
-            <Button text={'Login'} type={'form'} />
+            <Button label={'Login'} type={'form'} />
           </div>
         </Form>
         <AuthSidePanel>
           <h2 className={styles['header-title']}>Need an account?</h2>
           <p>Sign up to get started</p>
-          <Button text={'Sign up'} variant={'outline'} type={'route-link'} to={'/signup'} />
+          <Button label={'Sign up'} variant={'outline'} type={'route-link'} to={'/signup'} />
         </AuthSidePanel>
       </>
   );
