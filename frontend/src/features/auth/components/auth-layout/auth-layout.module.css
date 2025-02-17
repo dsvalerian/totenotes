@@ -1,0 +1,25 @@
+.auth-layout {
+    padding: 1rem;
+    overflow: visible;
+}
+
+.main-panel {
+    border-radius: var(--radius-large);
+    box-shadow: 0 0 var(--shadow-size-large) rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .auth-layout {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 900px;
+    }
+}

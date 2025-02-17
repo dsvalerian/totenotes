@@ -24,7 +24,10 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       'semi': 'error',
-      'no-unused-vars': 'warn',
+      'prefer-destructuring': ['error', {
+        'array': true,
+        'object': true,
+      }],
     },
   },
 )

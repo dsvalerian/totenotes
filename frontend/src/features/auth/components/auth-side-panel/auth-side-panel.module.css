@@ -1,0 +1,23 @@
+.panel {
+    padding: 2rem;
+    background: var(--clr-primary-500);
+    border-radius: 0 0 var(--radius-large) var(--radius-large);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    max-width: 13rem;
+    margin: auto;
+}
+
+@media (min-width: 600px) {
+    .panel {
+        border-radius: 0 var(--radius-large) var(--radius-large) 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

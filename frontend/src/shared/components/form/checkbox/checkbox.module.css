@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.wrapper:hover {
+    cursor: pointer;
+}
+
+.checkbox {
+    accent-color: var(--clr-secondary-500);
+    width: 15px;
+}
+
+.checkbox:hover {
+    cursor: pointer;
+}
+
+.label {
+    color: var(--clr-neutral-500);
+    text-align: left;
+}
+
+.label:hover {
+    cursor: pointer;
+    user-select: none;
+}
