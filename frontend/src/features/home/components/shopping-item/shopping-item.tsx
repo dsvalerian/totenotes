@@ -1,4 +1,4 @@
-import styles from './shopping-item.module.css';
+import styles from "./shopping-item.module.css";
 
 interface ShoppingItemProps {
   name: string,
@@ -8,7 +8,7 @@ interface ShoppingItemProps {
 
 const ShoppingItem = ({name, quantity, quantityUnit}: ShoppingItemProps) => {
   return (
-      <li className={styles['shopping-item']}>
+      <li className={styles["shopping-item"]}>
         <p>{quantity}{quantityUnit && ` ${quantityUnit}`}</p>
         <p>{name}</p>
       </li>

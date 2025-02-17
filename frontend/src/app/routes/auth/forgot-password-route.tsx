@@ -1,5 +1,5 @@
-import AuthLayout from '../../../features/auth/components/auth-layout/auth-layout.tsx';
-import ForgotPasswordPanel from '../../../features/auth/components/forgot-password-panel/forgot-password-panel.tsx';
+import AuthLayout from "../../../features/auth/components/auth-layout/auth-layout.tsx";
+import ForgotPasswordPanel from "../../../features/auth/components/forgot-password-panel/forgot-password-panel.tsx";
 
 const ForgotPasswordRoute = () => {
   return (

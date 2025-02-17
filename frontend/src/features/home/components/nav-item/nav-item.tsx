@@ -1,4 +1,4 @@
-import styles from './nav-item.module.css';
+import styles from "./nav-item.module.css";
 
 interface NavItemProps {
   label: string,
@@ -8,7 +8,7 @@ interface NavItemProps {
 
 const NavItem = ({label, selected, onClick}: NavItemProps) => {
   return (
-      <li className={`${styles['nav-item']} ${selected && styles['selected']}`} onClick={onClick}>
+      <li className={`${styles["nav-item"]} ${selected && styles["selected"]}`} onClick={onClick}>
         {label}
       </li>
   );

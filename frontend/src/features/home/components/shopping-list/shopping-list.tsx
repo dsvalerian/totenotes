@@ -1,22 +1,19 @@
 import styles from "./shopping-list.module.css";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import {ShoppingItemModel} from "../../api/queries.ts";
-import ShoppingItem from "../shopping-item/shopping-item.tsx";
+import {ShoppingListModel} from "../../api/queries.ts";
 
 interface ShoppingListProps {
-  items: ShoppingItemModel[];
+  list: ShoppingListModel;
 }
 
-const ShoppingList = ({items}: ShoppingListProps) => {
-  const shoppingListItems = items.map((item: ShoppingItemModel) =>
-    <ShoppingItem key={item.id} name={item.name} quantity={item.quantity} quantityUnit={item.quantityUnit} />
-  );
+const ShoppingList = ({list}: ShoppingListProps) => {
+  const shoppingListItems = <div></div>;
 
   return (
-      <ul className={styles['shopping-list']}>
+      <ul className={styles["shopping-list"]}>
         {shoppingListItems}
-        <div className={styles['button-wrapper']}>
-          <Button label={'New Item'} onClick={() => console.log("clicked")}/>
+        <div className={styles["button-wrapper"]}>
+          <Button label={"New Item"} onClick={() => console.log("clicked")}/>
         </div>
       </ul>
   );

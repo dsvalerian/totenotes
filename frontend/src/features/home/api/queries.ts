@@ -8,10 +8,9 @@ export interface ShoppingItemModel {
 export interface ShoppingListModel {
   id: number,
   name: string,
-  items: ShoppingItemModel[]
 }
 
-const lists: ShoppingListModel[] = [
+const lists: (ShoppingListModel & {items: ShoppingItemModel[]})[] = [
   {
     id: 1,
     name: "Groceries",
@@ -49,21 +48,29 @@ const lists: ShoppingListModel[] = [
   },
 ];
 
-export const fetchLists = async () => {
-  return lists;
+export const fetchLists = async (): Promise<ShoppingListModel[]> => {
+  return lists.map(list => ({
+    id: list.id,
+    name: list.name,
+  }));
+};
+
+export const fetchItems = async (id: number): Promise<ShoppingItemModel[]> => {
+  return lists.find(list => list.id === id)?.items || [];
 };
 
 export const addList = async (name: string): Promise<ShoppingListModel> => {
+  console.log("Adding new list");
+
   const highestId = lists.reduce((acc: number, currentList) => {
     return currentList.id > acc ? currentList.id : acc;
   }, 0);
 
-  const newList = {
+  const newList: ShoppingListModel = {
     id: highestId + 1,
-    name: name,
-    items: []
+    name: name
   };
 
-  lists.push(newList);
+  lists.push({...newList, items: []});
   return newList;
 };

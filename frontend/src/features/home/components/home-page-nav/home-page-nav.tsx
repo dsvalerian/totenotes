@@ -23,17 +23,16 @@ const HomePageNav = ({title, user, lists, selectedList, onSelectedList, onNewLis
   );
 
   return (
-      <nav className={styles['nav']}>
-        <h2 className={styles['title']}>{title}</h2>
-        <ul className={styles['item-list']}>
+      <nav className={styles["nav"]}>
+        <h2 className={styles["title"]}>{title}</h2>
+        <ul className={styles["item-list"]}>
           {navItems}
           <Button
-              type={'normal'}
-              label={'New List'}
+              label={"New List"}
               onClick={() => onNewList("New List")}
           />
         </ul>
-        <p className={styles['footer']}>{user}</p>
+        <p className={styles["footer"]}>{user}</p>
       </nav>
   );
 };

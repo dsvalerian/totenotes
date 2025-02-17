@@ -9,11 +9,11 @@ export interface ApiResponse {
 }
 
 export const createNewUser = async (user: UserCredentials): Promise<ApiResponse> => {
-  const response = await fetch('/api/auth/register', {
-    method: 'POST',
+  const response = await fetch("/api/auth/register", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      "Content-Type": "application/json",
+      "Accept": "application/json",
     },
     body: JSON.stringify(user),
   });
@@ -22,11 +22,11 @@ export const createNewUser = async (user: UserCredentials): Promise<ApiResponse>
 };
 
 export const loginUser = async (user: UserCredentials): Promise<ApiResponse> => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      "Accept": "application/json"
     },
     body: JSON.stringify(user)
   });
