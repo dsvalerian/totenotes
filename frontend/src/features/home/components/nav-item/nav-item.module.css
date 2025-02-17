@@ -12,6 +12,11 @@
 
 .nav-item:hover {
     cursor: pointer;
-    background: var(--clr-secondary-500);
+    background: hsla(var(--clr-accent-500-hsl), .8);
+    color: var(--clr-neutral-50);
+}
+
+.selected, .selected:hover {
+    background: var(--clr-accent-500);
     color: var(--clr-neutral-50);
 }

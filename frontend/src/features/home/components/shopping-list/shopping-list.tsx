@@ -1,13 +1,22 @@
-import styles from './shopping-list.module.css';
-import {PropsWithChildren} from 'react';
-import Button from '../../../../shared/components/ui/button/button.tsx';
+import styles from "./shopping-list.module.css";
+import Button from "../../../../shared/components/ui/button/button.tsx";
+import {ShoppingItemModel} from "../../api/queries.ts";
+import ShoppingItem from "../shopping-item/shopping-item.tsx";
 
-const ShoppingList = ({children}: PropsWithChildren) => {
+interface ShoppingListProps {
+  items: ShoppingItemModel[];
+}
+
+const ShoppingList = ({items}: ShoppingListProps) => {
+  const shoppingListItems = items.map((item: ShoppingItemModel) =>
+    <ShoppingItem key={item.id} name={item.name} quantity={item.quantity} quantityUnit={item.quantityUnit} />
+  );
+
   return (
       <ul className={styles['shopping-list']}>
-        {children}
+        {shoppingListItems}
         <div className={styles['button-wrapper']}>
-          <Button label={'New Item'} />
+          <Button label={'New Item'} onClick={() => console.log("clicked")}/>
         </div>
       </ul>
   );

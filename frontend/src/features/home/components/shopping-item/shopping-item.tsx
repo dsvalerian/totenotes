@@ -1,16 +1,16 @@
 import styles from './shopping-item.module.css';
 
 interface ShoppingItemProps {
-  item: string,
-  amount: number,
-  unit: string
+  name: string,
+  quantity: number,
+  quantityUnit?: string
 }
 
-const ShoppingItem = ({item, amount, unit}: ShoppingItemProps) => {
+const ShoppingItem = ({name, quantity, quantityUnit}: ShoppingItemProps) => {
   return (
       <li className={styles['shopping-item']}>
-        <p>{amount} {unit}</p>
-        <p>{item}</p>
+        <p>{quantity}{quantityUnit && ` ${quantityUnit}`}</p>
+        <p>{name}</p>
       </li>
   );
 };

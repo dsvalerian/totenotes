@@ -3,11 +3,15 @@
 
 :root {
     --clr-primary-500-hsl: 39, 100%, 63%;
+    --clr-secondary-300-hsl: 338, 85%, 64%;
     --clr-secondary-500-hsl: 338, 85%, 46%;
+    --clr-accent-300-hsl: 178, 60%, 53%;
     --clr-accent-500-hsl: 178, 60%, 32%;
 
     --clr-primary-500: hsl(var(--clr-primary-500-hsl));
+    --clr-secondary-300: hsl(var(--clr-secondary-300-hsl));
     --clr-secondary-500: hsl(var(--clr-secondary-500-hsl));
+    --clr-accent-300: hsl(var(--clr-accent-300-hsl));
     --clr-accent-500: hsl(var(--clr-accent-500-hsl));
 
     --clr-neutral-50: hsl(38, 8%, 97%);

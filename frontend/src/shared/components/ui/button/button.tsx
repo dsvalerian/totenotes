@@ -3,32 +3,38 @@ import {Link} from 'react-router-dom';
 
 interface CommonButtonProps {
   label: string,
-  variant?: 'solid' | 'outline'
+  variant?: 'solid' | 'outline',
 }
 
-type ConditionalButtonProps = | {
-  type?: 'normal' | 'form',
-  to?: never
+type ConditionalButtonProps = {
+  type?: 'normal',
+  to?: never,
+  onClick: () => void
+} | {
+  type: 'form',
+  to?: never,
+  onClick?: never
 } | {
   type: 'route-link',
-  to: string
+  to: string,
+  onClick?: never
 };
 
 type ButtonProps = CommonButtonProps & ConditionalButtonProps;
 
-const Button = ({label, variant, type, to}: ButtonProps) => {
+const Button = ({label, variant, onClick, type, to}: ButtonProps) => {
   const classNames = `${styles['button']} ${styles[variant || 'solid']}`;
 
   switch (type || 'normal') {
     case 'normal':
       return (
-          <input className={classNames} value={label} type={'submit'} />
+          <button className={classNames} onClick={onClick}>
+            {label}
+          </button>
       );
     case 'form':
       return (
-          <button className={classNames}>
-            {label}
-          </button>
+          <input className={classNames} value={label} type={'submit'} />
       );
     case 'route-link':
       return (
