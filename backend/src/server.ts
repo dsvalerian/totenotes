@@ -1,23 +1,11 @@
 import express from "express";
-import authRouter from "./auth/auth-router.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import session from "express-session";
-import cors from "cors";
-import defaultRouter from "./default/default-router.js";
-
-// Augmenting express-session with custom object
-declare module "express-session" {
-  interface SessionData {
-    user: string
-  }
-}
-
-export interface ResponseBody {
-  success: boolean,
-  message: string,
-  data?: {someValue: string}
-}
+import fallbackRouter from "./api/fallback/fallback-router.js";
+import passport from "passport";
+import "./api/auth/strategies/local-strategy.js";
+import apiRouter from "./api/api-router.js";
 
 dotenv.config();
 
@@ -40,7 +28,8 @@ else {
 // Create the app
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+// Adding support for sessions
 app.use(session({
   secret: process.env.SESSION_SECRET || "test-dev",
   saveUninitialized: false,
@@ -50,9 +39,12 @@ app.use(session({
   }
 }));
 
+// Setting up passport authentication
+app.use(passport.initialize());
+
 // Registering routes
-app.use("/api/auth", authRouter);
-app.use("*", defaultRouter);
+app.use("/api", apiRouter);
+app.use("*", fallbackRouter);
 
 // Start listening
 const PORT = process.env.SERVER_PORT || 3000;

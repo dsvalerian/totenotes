@@ -3,7 +3,7 @@
     box-sizing: border-box;
 }
 
-/* 2. Remove default margin */
+/* 2. Remove fallback margin */
 * {
     margin: 0;
 }

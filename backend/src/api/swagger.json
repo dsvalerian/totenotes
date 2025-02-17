@@ -1,0 +1,360 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ToteNotes API",
+    "description": "The documentation of the ToteNotes API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "User authentication"
+    },
+    {
+      "name": "lists",
+      "description": "Retrieve and update shopping lists"
+    },
+    {
+      "name": "items",
+      "description": "Retrieve and update items within shopping lists"
+    },
+    {
+      "name": "shared",
+      "description": "Share lists with other users"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email address",
+            "required": true,
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user's password",
+            "required": true,
+            "example": "secure!password$123"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Create a new user account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "User already exists or invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login a user",
+        "description": "Obtain a new session token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout a user",
+        "description": "Invalidate the session token belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "User logged out successfully"
+          },
+          "401": {
+            "description": "No user logged in"
+          }
+        }
+      }
+    },
+    "/lists": {
+      "get": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Get all lists",
+        "description": "Get the lists belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "Retrieved lists successfully"
+          },
+          "401": {
+            "description": "Unauthorized to retrieve lists"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Create a new list",
+        "description": "Create a new list for the currently-authenticated user",
+        "responses": {
+          "201": {
+            "description": "List created successfully"
+          },
+          "401": {
+            "description": "Unauthorized to create list"
+          }
+        }
+      }
+    },
+    "/lists/{list_id}": {
+      "get": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Get a list",
+        "description": "Get a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "List retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized to retrieve list"
+          },
+          "403": {
+            "description": "Forbidden to retrieve list to which you have no access"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Update a list",
+        "description": "Update a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "List updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized to update list"
+          },
+          "403": {
+            "description": "Forbidden to update list to which you have no access"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Delete a list",
+        "description": "Delete a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "List deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized to delete list"
+          },
+          "403": {
+            "description": "Forbidden to delete list to which you have no access"
+          }
+        }
+      }
+    },
+    "/lists/{list_id}/items": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Get all items in a list",
+        "description": "Get all items in a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "Items retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized to retrieve items"
+          },
+          "403": {
+            "description": "Forbidden to retrieve items within a list to which you have no access"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Add an item to a list",
+        "description": "Add a new item to a list belonging to the currently-authenticated user",
+        "responses": {
+          "201": {
+            "description": "Item created successfully"
+          },
+          "401": {
+            "description": "Unauthorized to create items"
+          },
+          "403": {
+            "description": "Forbidden to create items within a list to which you have no access"
+          }
+        }
+      }
+    },
+    "/lists/{list_id}/items/{item_id}": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Get an item in a list",
+        "description": "Get an item in a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "Item retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized to retrieve item"
+          },
+          "403": {
+            "description": "Forbidden to retrieve item within a list to which you have no access"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Update an item in a list",
+        "description": "Update an item in a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "Item updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized to update item"
+          },
+          "403": {
+            "description": "Forbidden to update item within a list to which you have no access"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Delete an item in a list",
+        "description": "Delete an item in a list belonging to the currently-authenticated user",
+        "responses": {
+          "200": {
+            "description": "Item deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized to delete item"
+          },
+          "403": {
+            "description": "Forbidden to delete item within a list to which you have no access"
+          }
+        }
+      }
+    },
+    "/lists/{list_id}/shared": {
+      "get": {
+        "tags": [
+          "shared"
+        ],
+        "summary": "Get all users with access to a list",
+        "description": "Get all users with access to a list belonging to the currently-authorized user",
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized to retrieve users"
+          },
+          "403": {
+            "description": "Forbidden to retrieve users with access to a list to which you have no access"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "shared"
+        ],
+        "summary": "Give list access to a user",
+        "description": "Add a new user to the access table of a list belonging to the currently-authorized user",
+        "responses": {
+          "200": {
+            "description": "User access granted successfully"
+          },
+          "401": {
+            "description": "Unauthorized to give access"
+          },
+          "403": {
+            "description": "Forbidden to give access to a list to which you have no access"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "shared"
+        ],
+        "summary": "Delete list access for a user",
+        "description": "Remove a user from the access table of a list belonging to the currently-authorized user",
+        "responses": {
+          "200": {
+            "description": "User access deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized to delete access"
+          },
+          "403": {
+            "description": "Forbidden to delete access to a list to which you have no access"
+          }
+        }
+      }
+    }
+  }
+}
