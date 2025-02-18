@@ -7,7 +7,7 @@
     gap: 1rem;
 }
 
-.footer {
+.header {
     font-size: var(--fs-600);
     font-weight: var(--fw-semibold);
 }
@@ -26,6 +26,6 @@
     scrollbar-color: var(--clr-neutral-400) var(--clr-primary-500);
 }
 
-.item-list > * {
+.item-list > *, button {
     flex-shrink: 0;
 }

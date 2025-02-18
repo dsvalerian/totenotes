@@ -8,4 +8,5 @@
     border-radius: var(--radius-large);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     font-size: var(--fs-500);
+    overflow: visible;
 }

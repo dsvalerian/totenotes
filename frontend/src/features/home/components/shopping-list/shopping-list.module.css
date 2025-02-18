@@ -1,12 +1,27 @@
+.page-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 2rem;
+}
+
 .shopping-list {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     width: 100%;
     gap: 1.25rem;
     padding: 2rem;
+    overflow: auto;
+    scrollbar-color: var(--clr-neutral-400) white;
+}
+
+.shopping-list > * {
+    flex-shrink: 0;
 }
 
 .button-wrapper {
     width: 15rem;
     align-self: center;
+    flex-shrink: 0;
 }

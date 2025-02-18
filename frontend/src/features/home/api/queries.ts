@@ -10,6 +10,7 @@ export interface ShoppingListModel {
   name: string,
 }
 
+// MOCK DATA, will be replaced by DB calls
 const lists: (ShoppingListModel & {items: ShoppingItemModel[]})[] = [
   {
     id: 1,
@@ -73,4 +74,27 @@ export const addList = async (name: string): Promise<ShoppingListModel> => {
 
   lists.push({...newList, items: []});
   return newList;
+};
+
+export const addItem = async (listId: number, name: string): Promise<ShoppingItemModel | null> => {
+  console.log("Adding new item");
+
+  const list = lists.find(list => list.id === listId);
+
+  if (!list) {
+    return null;
+  }
+
+  const highestItemId = list?.items.reduce((acc, currentItem) => {
+    return currentItem.id > acc ? currentItem.id : acc;
+  }, 0);
+
+  const newItem: ShoppingItemModel = {
+    id: highestItemId + 1,
+    name: name,
+    quantity: 1,
+  };
+
+  list.items.push(newItem);
+  return newItem;
 };
