@@ -18,7 +18,7 @@ const lists: (ShoppingListModel & {items: ShoppingItemModel[]})[] = [
     items: [
       {id: 1, name: "Cereal", quantity: 1},
       {id: 2, name: "Sugar", quantity: 2, quantityUnit: "lb"},
-      {id: 3, name: "Milk", quantity: 1, quantityUnit: "gallon"},
+      {id: 3, name: "Milk", quantity: 10, quantityUnit: "gallon"},
     ]
   },
   {
@@ -50,14 +50,20 @@ const lists: (ShoppingListModel & {items: ShoppingItemModel[]})[] = [
 ];
 
 export const fetchLists = async (): Promise<ShoppingListModel[]> => {
-  return lists.map(list => ({
-    id: list.id,
-    name: list.name,
-  }));
+  console.log("Fetching lists");
+
+  return lists
+    .sort((a, b) => b.id - a.id)
+    .map(list => ({
+      id: list.id,
+      name: list.name,
+    }));
 };
 
-export const fetchItems = async (id: number): Promise<ShoppingItemModel[]> => {
-  return lists.find(list => list.id === id)?.items || [];
+export const fetchItems = async (listId: number): Promise<ShoppingItemModel[]> => {
+  console.log("Fetching items for list id", listId);
+
+  return lists.find(list => list.id === listId)?.items || [];
 };
 
 export const addList = async (name: string): Promise<ShoppingListModel> => {
@@ -76,18 +82,28 @@ export const addList = async (name: string): Promise<ShoppingListModel> => {
   return newList;
 };
 
+export const updateList = async (list: ShoppingListModel): Promise<ShoppingListModel> => {
+  console.log("Updating list", list);
+
+  const listToUpdate = lists.find(currentList => currentList.id === list.id);
+  if (listToUpdate) {
+    listToUpdate.name = list.name;
+  }
+
+  return list;
+};
+
 export const addItem = async (listId: number, name: string): Promise<ShoppingItemModel | null> => {
   console.log("Adding new item");
 
   const list = lists.find(list => list.id === listId);
-
   if (!list) {
     return null;
   }
 
-  const highestItemId = list?.items.reduce((acc, currentItem) => {
-    return currentItem.id > acc ? currentItem.id : acc;
-  }, 0);
+  const highestItemId = lists
+      .flatMap(list => list.items)
+      .reduce((acc, currentItem) => currentItem.id > acc ? currentItem.id : acc, 0);
 
   const newItem: ShoppingItemModel = {
     id: highestItemId + 1,
@@ -97,4 +113,19 @@ export const addItem = async (listId: number, name: string): Promise<ShoppingIte
 
   list.items.push(newItem);
   return newItem;
+};
+
+export const updateItem = async (item: ShoppingItemModel): Promise<ShoppingItemModel> => {
+  console.log("Updating item", item);
+
+  const itemToUpdate = lists
+      .flatMap(currentList => currentList.items)
+      .find(currentItem => currentItem.id === item.id);
+  if (itemToUpdate) {
+    itemToUpdate.name = item.name;
+    itemToUpdate.quantity = item.quantity;
+    itemToUpdate.quantityUnit = item.quantityUnit;
+  }
+
+  return item;
 };

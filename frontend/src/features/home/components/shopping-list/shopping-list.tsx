@@ -1,41 +1,54 @@
 import styles from "./shopping-list.module.css";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import {addItem, fetchItems, ShoppingItemModel, ShoppingListModel} from "../../api/queries.ts";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {ShoppingItemModel} from "../../api/shopping-items.ts";
 import ShoppingItem from "../shopping-item/shopping-item.tsx";
-import {ReactElement} from "react";
+import {ReactElement, useEffect, useState} from "react";
+import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
+import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
+import useShoppingItems from "../../hooks/use-shopping-items.ts";
+import useUpdateShoppingList from "../../hooks/use-update-shopping-list.ts";
+import useAddShoppingItem from "../../hooks/use-add-shopping-item.ts";
 
-interface ShoppingListProps {
-  list: ShoppingListModel;
-}
-
-const ShoppingList = ({list}: ShoppingListProps) => {
-  const addItemMutation = useMutation({
-    mutationFn: (name: string) => addItem(list.id, name)
-  });
-
-  const {status, data: items} = useQuery<ShoppingItemModel[]>({
-    queryKey: [`items-${list.id}`],
-    queryFn: () => fetchItems(list.id),
-  });
+const ShoppingList = () => {
+  const [selectedShoppingList] = useSelectedShoppingListContext();
+  const {status, data: items} = useShoppingItems(selectedShoppingList.id);
+  const [name, setName] = useState(selectedShoppingList.name);
+  const updateListMutation = useUpdateShoppingList({...selectedShoppingList, name: name});
+  const addItemMutation = useAddShoppingItem(selectedShoppingList.id, "New Item");
 
   let shoppingListItems: ReactElement[] = [];
-  if (status === "success") {
+
+  console.log("selected list", selectedShoppingList);
+
+  useEffect(() => {
+    if (selectedShoppingList) {
+      setName(selectedShoppingList.name);
+    }
+  }, [selectedShoppingList]);
+
+  if (status === "success" && items && items.length > 0) {
+    console.log(items);
     shoppingListItems = items?.map((item: ShoppingItemModel) =>
-        <ShoppingItem key={item.id} name={item.name} quantity={item.quantity} quantityUnit={item.quantityUnit} />
+        <ShoppingItem key={item.id} listId={selectedShoppingList.id} item={item} />,
     );
   }
 
   return (
       <div className={styles["page-content"]}>
-        <h1 className={styles["page-title"]}>{list.name}</h1>
+        <InputField
+            value={name}
+            variant={"transparent"}
+            size={"large"}
+            onChange={e => setName(e.target.value)}
+            onBlur={updateListMutation.mutate}
+        />
         <ul className={styles["shopping-list"]}>
           {shoppingListItems}
         </ul>
         <div className={styles["button-wrapper"]}>
           <Button
               label={"New Item"}
-              onClick={() => addItemMutation.mutate("New Item")}
+              onClick={addItemMutation.mutate}
           />
         </div>
       </div>

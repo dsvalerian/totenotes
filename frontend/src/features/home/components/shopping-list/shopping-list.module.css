@@ -2,7 +2,11 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    gap: 2rem;
+    gap: 1rem;
+    background: white;
+    border-radius: var(--radius-large);
+    padding: 1.5rem;
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.3);
 }
 
 .shopping-list {
@@ -11,7 +15,7 @@
     flex-grow: 1;
     width: 100%;
     gap: 1.25rem;
-    padding: 2rem;
+    padding: 1rem 2rem;
     overflow: auto;
     scrollbar-color: var(--clr-neutral-400) white;
 }

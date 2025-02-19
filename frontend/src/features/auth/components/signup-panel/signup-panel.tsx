@@ -1,6 +1,6 @@
 import styles from "./signup-panel.module.css";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import InputField from "../../../../shared/components/ui/input-field/input-field.tsx";
+import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import Form from "../../../../shared/components/form/form/form.tsx";
 import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
 import {useMutation} from "@tanstack/react-query";

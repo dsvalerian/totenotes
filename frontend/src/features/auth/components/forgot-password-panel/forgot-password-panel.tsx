@@ -1,6 +1,6 @@
 import styles from "./forgot-password-panel.module.css";
 import Form from "../../../../shared/components/form/form/form.tsx";
-import InputField from "../../../../shared/components/ui/input-field/input-field.tsx";
+import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import Button from "../../../../shared/components/ui/button/button.tsx";
 import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
 

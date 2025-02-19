@@ -3,6 +3,8 @@
     min-width: 20rem;
     display: flex;
     flex-direction: column;
+    max-width: 25rem;
+    text-wrap: nowrap;
     padding: 2rem;
     gap: 1rem;
 }
@@ -28,4 +30,5 @@
 
 .item-list > *, button {
     flex-shrink: 0;
+    overflow: hidden;
 }

@@ -1,12 +1,15 @@
 .shopping-item {
     list-style: none;
     height: 3.5rem;
-    display: grid;
-    grid-template-columns: 5rem auto;
+    display: flex;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 0.5rem;
     border-radius: var(--radius-large);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     font-size: var(--fs-500);
     overflow: visible;
+}
+
+.name-field {
+    flex-grow: 1;
 }

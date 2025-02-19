@@ -1,0 +1,41 @@
+.input-field {
+    border-radius: var(--radius-large);
+    border: hidden;
+    padding: 0 1.5rem;
+    transition: var(--transition-time-short);
+    width: 100%;
+}
+
+.input-field:hover {
+    cursor: pointer;
+}
+
+.input-field:focus {
+    outline: 2px solid var(--clr-secondary-500);
+    cursor: text;
+}
+
+.input-field::placeholder {
+    color: var(--clr-neutral-400);
+}
+
+.normal {
+    background: var(--clr-neutral-100);
+}
+
+.transparent {
+    background: transparent;
+}
+
+.transparent:hover, .transparent:focus {
+    background: var(--clr-neutral-100);
+}
+
+.small {
+    height: 2.5rem;
+}
+
+.large {
+    font-size: var(--fs-800);
+    height: 3.5rem;
+}
