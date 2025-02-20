@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {addList} from "../api/shopping-items.ts";
+import {addList} from "../api/shopping-lists.ts";
 
 const useAddShoppingList = (listName: string) => {
   const queryClient = useQueryClient();

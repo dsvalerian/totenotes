@@ -18,8 +18,6 @@ const ShoppingList = () => {
 
   let shoppingListItems: ReactElement[] = [];
 
-  console.log("selected list", selectedShoppingList);
-
   useEffect(() => {
     if (selectedShoppingList) {
       setName(selectedShoppingList.name);
@@ -27,7 +25,6 @@ const ShoppingList = () => {
   }, [selectedShoppingList]);
 
   if (status === "success" && items && items.length > 0) {
-    console.log(items);
     shoppingListItems = items?.map((item: ShoppingItemModel) =>
         <ShoppingItem key={item.id} listId={selectedShoppingList.id} item={item} />,
     );

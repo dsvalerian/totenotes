@@ -19,7 +19,6 @@ const HomePageNav = ({title, user}: HomePageNavProps) => {
   useEffect(() => {
     if (status === "success" && lists && lists.length > 0) {
       setSelectedShoppingList(lists[0]);
-      console.log("selecting list", lists[0]);
     }
   }, [status, lists, setSelectedShoppingList]);
 
