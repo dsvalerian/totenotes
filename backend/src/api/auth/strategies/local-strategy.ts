@@ -1,26 +1,21 @@
 import {Strategy} from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
-import User, {UserModel} from "../user-model.js";
-import {ObjectId} from "mongoose";
-
-interface User {
-  _id?: ObjectId;
-}
+import User from "../user-model.js";
 
 // Called when creating a session
-passport.serializeUser((user: User, done) => {
-  done(null, user._id);
+passport.serializeUser((user: {id?: number}, done) => {
+  return done(null, user.id);
 });
 
 // Called when receiving a session
-passport.deserializeUser(async (userId: string, done) => {
-  const user = User.findById(userId);
-  if (!user) {
-    return done(new Error("User not found"));
+passport.deserializeUser(async (userId: number, done) => {
+  const user = await User.findByPk(userId);
+  if (user) {
+    return done(null, user.get());
   }
 
-  return done(null, user);
+  return done(new Error("User not found"));
 });
 
 
@@ -31,21 +26,28 @@ passport.use(new Strategy(
       console.info(`Authenticating user ${email} through passport`);
 
       // Check for existing user
-      const existingUser: UserModel | null = await User.findOne({email: email});
-      if (!existingUser) {
-        console.error("User not found");
-        return done(new Error("User not found"));
-      }
+      const existingUser = await User.findOne({
+        where: {
+          email: email,
+        }
+      });
 
-      // Check for correct password
-      const passwordsMatch = await bcrypt.compare(password, existingUser.password);
-      if (!passwordsMatch) {
-        console.error("Passwords do not match");
+      if (existingUser) {
+        const userData = existingUser.get();
+
+        // Check for correct password
+        const passwordsMatch = await bcrypt.compare(password, existingUser.get().passwordHash);
+        if (passwordsMatch) {
+          console.info("Authentication successful");
+          const {passwordHash: _, ...userDetails} = userData;
+          return done(null, userDetails);
+        }
+
+        console.error("Authentication failed, incorrect password");
         return done(null, false);
       }
 
-      // Authenticated
-      console.info("Authentication successful");
-      return done(null, existingUser);
+      console.error("User not found");
+      return done(new Error("User not found"));
     }
 ));

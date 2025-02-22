@@ -1,41 +1,39 @@
-import User, {UserModel} from "./user-model.js";
+import User from "./user-model.js";
 import bcrypt from "bcrypt";
 import {Request, Response} from "express";
-import {ResponseBody} from "../types.js";
+import {errorResponse, successResponse} from "../utils.js";
 
 /**
  * Register a new user.
  * @param req
  * @param res
  */
-export const registerUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   console.info(`Registering user ${req.body.email}`);
 
   // Check for existing user
-  const existingUser = await User.findOne({ email: req.body.email });
-  if (existingUser) {
-    const responseBody: ResponseBody = {
-      success: false,
-      message: "User already exists"
-    };
+  try {
+    const existingUser = await User.findOne({
+      where: {
+        email: req.body.email
+      }
+    });
+    if (existingUser) {
+      return res.status(400).json(errorResponse("User already exists"));
+    }
 
-    console.info(responseBody.message);
-    return res.status(400).json(responseBody);
+    const newUser = await User.create({
+      email: req.body.email,
+      passwordHash: await bcrypt.hash(req.body.password, 10)
+    });
+
+    const {passwordHash: _, ...userDetails} = newUser.get();
+
+    return res.status(201).json(userDetails);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(errorResponse("Failed to register user"));
   }
-
-  // Creating new user with hashed password
-  const newUser = new User({
-    email: req.body.email,
-    password: await bcrypt.hash(req.body.password, 10)
-  });
-
-  await newUser.save();
-
-  const responseBody: ResponseBody = {
-    success: true,
-    message: `User ${newUser.email} registered successfully`,
-  };
-  return res.status(201).json(responseBody);
 };
 
 /**
@@ -44,12 +42,18 @@ export const registerUser = async (req: Request, res: Response) => {
  * @param res
  */
 export const loginUser = async (req: Request, res: Response) => {
-  const responseBody: ResponseBody = {
-    success: true,
-    message: "Logged in"
-  };
+  console.info("Logging in user");
 
-  return res.json(responseBody);
+  try {
+    if (!req.user) {
+      return res.status(401).json(errorResponse("Could not login user"));
+    }
+
+    return res.send(req.user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(errorResponse("Failed to login user"));
+  }
 };
 
 /**
@@ -58,15 +62,22 @@ export const loginUser = async (req: Request, res: Response) => {
  * @param res
  */
 export const logoutUser = async (req: Request, res: Response) => {
-  if (!req.user) {
-    return res.status(401).json({success: false, message: "No logged in user to log out"});
-  }
+  console.info("Logging out user");
 
-  req.logout(err => {
-    if (err) {
-      return res.status(401).json({success: false, message: err.message});
+  try {
+    if (!req.user) {
+      return res.status(401).json(errorResponse("No user is logged in"));
     }
 
-    return res.status(200).json({success: true, message: "User successfully logged out"});
-  });
+    req.logout(err => {
+      if (err) {
+        return res.status(401).json(errorResponse("Failed to log out user"));
+      }
+
+      return res.json(successResponse("Logged out"));
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(errorResponse("Failed to logout user"));
+  }
 };

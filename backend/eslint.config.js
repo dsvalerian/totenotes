@@ -15,7 +15,10 @@ export default tseslint.config(
         "array": true,
         "object": true,
       }],
-      "quotes": "error"
-    },
+      "quotes": "error",
+      "@typescript-eslint/no-unused-vars": ["error", {
+        "varsIgnorePattern": "^_",
+      }]
+    }
   },
 )
