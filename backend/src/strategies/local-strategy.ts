@@ -1,7 +1,7 @@
 import {Strategy} from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
-import User from "../user-model.js";
+import User from "../models/user-model.js";
 
 // Called when creating a session
 passport.serializeUser((user: {id?: number}, done) => {
@@ -17,7 +17,6 @@ passport.deserializeUser(async (userId: number, done) => {
 
   return done(new Error("User not found"));
 });
-
 
 // Authentication and user verification
 passport.use(new Strategy(

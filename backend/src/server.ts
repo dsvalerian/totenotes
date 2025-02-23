@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import passport from "passport";
-import "./api/auth/strategies/local-strategy.js";
-import apiRouter from "./api/api-router.js";
+import "./strategies/local-strategy.js";
+import apiRouter from "./api/routers/api-router.js";
 import sequelize from "./config/database.js";
 
 dotenv.config();

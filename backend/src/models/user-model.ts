@@ -1,5 +1,6 @@
-import sequelize from "../../config/database.js";
 import {DataTypes, Model} from "sequelize";
+import sequelize from "../config/database.js";
+import ListAccess from "./shopping-list-access-model.js";
 
 export interface UserAttributes {
   id: number,
@@ -7,13 +8,10 @@ export interface UserAttributes {
   passwordHash: string
 }
 
-interface UserCreateAttributes {
-  email: string,
-  passwordHash: string
-}
+type UserCreateAttributes = Omit<UserAttributes, "id">;
 
 const User = sequelize.define<Model<UserAttributes, UserCreateAttributes>>("User", {
-  id : {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
