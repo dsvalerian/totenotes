@@ -1,6 +1,5 @@
 import {DataTypes, Model} from "sequelize";
 import sequelize from "../config/database.js";
-import ListAccess from "./list-access-model.js";
 
 export interface UserAttributes {
   id: number,

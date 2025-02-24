@@ -5,6 +5,7 @@ import passport from "passport";
 import "./strategies/local-strategy.js";
 import apiRouter from "./api/routers/api-router.js";
 import sequelize from "./config/database.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -19,11 +20,17 @@ app.use(express.json());
 // Adding support for sessions
 app.use(session({
   secret: process.env.SESSION_SECRET || "test-dev",
-  saveUninitialized: false,
+  saveUninitialized: true,
   resave: false,
   cookie: {
+    httpOnly: true,
     maxAge: 30 * 60 * 1000
   }
+}));
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
 }));
 
 // Setting up passport authentication

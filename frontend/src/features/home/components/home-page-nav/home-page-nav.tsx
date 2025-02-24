@@ -5,6 +5,9 @@ import {ReactElement, useEffect} from "react";
 import useShoppingLists from "../../hooks/use-shopping-lists.ts";
 import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
 import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
+import useLogoutUser from "../../../auth/hooks/use-logout-user.ts";
+import useGetLoggedInUser from "../../../auth/hooks/use-get-logged-in-user.ts";
+import {useNavigate} from "react-router-dom";
 
 type HomePageNavProps = {
   title: string,
@@ -13,17 +16,28 @@ type HomePageNavProps = {
 
 const HomePageNav = ({title, user}: HomePageNavProps) => {
   const [selectedShoppingList, setSelectedShoppingList] = useSelectedShoppingListContext();
-  const {status, data: lists} = useShoppingLists();
+  const {status: shoppingListStatus, data: lists} = useShoppingLists();
   const addListMutation = useAddShoppingList("New List");
+  const logoutUserMutation = useLogoutUser("/login");
+  const {status: loggedInUserStatus, data: loggedInUser} = useGetLoggedInUser();
+  const navigate = useNavigate();
+
+  if (loggedInUserStatus === "success") {
+    // Check if a user is logged in
+    if (!loggedInUser.ok) {
+      // No user is logged in, so we redirect back to login page
+      navigate("/login");
+    }
+  }
 
   useEffect(() => {
-    if (status === "success" && lists && lists.length > 0) {
+    if (shoppingListStatus === "success" && lists && lists.length > 0) {
       setSelectedShoppingList(lists[0]);
     }
-  }, [status, lists, setSelectedShoppingList]);
+  }, [shoppingListStatus, lists, setSelectedShoppingList]);
 
   let navItems: ReactElement[] = [];
-  if (status === "success") {
+  if (shoppingListStatus === "success") {
     navItems = lists.map(list =>
         <NavItem
             key={list.id}
@@ -45,6 +59,12 @@ const HomePageNav = ({title, user}: HomePageNavProps) => {
           <Button
               label={"New List"}
               onClick={addListMutation.mutate}
+          />
+        </div>
+        <div className={styles["button"]}>
+          <Button
+              label={"Logout"}
+              onClick={logoutUserMutation.mutate}
           />
         </div>
       </nav>

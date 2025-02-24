@@ -1,7 +1,8 @@
-import User from "../../models/user-model.js";
+import User, {UserAttributes} from "../../models/user-model.js";
 import bcrypt from "bcrypt";
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
+import passport from "passport";
 
 /**
  * Register a new user.
@@ -28,9 +29,7 @@ export const createUser = async (req: Request, res: Response) => {
       passwordHash: await bcrypt.hash(req.body.password, 10)
     });
 
-    const {passwordHash: _, ...userDetails} = newUser.get();
-
-    return res.status(201).json(userDetails);
+    return res.status(201).json(stripUserDetails(newUser.get()));
   } catch (error) {
     console.error(error);
     return res.status(500).json(errorResponse("Failed to register user"));
@@ -43,19 +42,29 @@ export const createUser = async (req: Request, res: Response) => {
  * @param res
  */
 export const loginUser = async (req: Request, res: Response) => {
-  console.info("Logging in user");
+  const authenticate = passport.authenticate("local", (err: Error, user: Express.User) => {
+    console.info("Logging in user");
 
-  try {
-    if (!req.user?.id) {
-      console.info("User could not be authorized");
-      return res.status(401).json(errorResponse("Could not login user"));
+    if (err) {
+      return res.status(500).json(errorResponse(err.message));
     }
 
-    return res.send(req.user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(errorResponse("Failed to login user"));
-  }
+    console.log("user, user");
+
+    if (!user) {
+      return res.status(401).json(errorResponse("Invalid credentials"));
+    }
+
+    req.login(user, err => {
+      if (err) {
+        return res.status(500).json(errorResponse(err.message));
+      }
+
+      return res.json(successResponse("Successfully logged in"));
+    });
+  });
+
+  return authenticate(req, res);
 };
 
 /**
@@ -84,4 +93,28 @@ export const logoutUser = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json(errorResponse("Failed to logout user"));
   }
+};
+
+export const getLoggedInUser = async (req: Request, res: Response) => {
+  try {
+    if (req.isAuthenticated()) {
+      const user = await User.findByPk(req.user.id);
+      if (!user) {
+        return res.status(404).json(errorResponse("User does not exist"));
+      }
+
+      return res.json(stripUserDetails(user.get()));
+    }
+    else {
+      return res.status(404).json(errorResponse("No user authenticated"));
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Failed to get logged in user"));
+  }
+};
+
+const stripUserDetails = (user: UserAttributes) => {
+  const {passwordHash: _, ...rest} = user;
+  return rest;
 };

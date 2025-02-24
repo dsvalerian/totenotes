@@ -31,22 +31,22 @@ passport.use(new Strategy(
         }
       });
 
-      if (existingUser) {
-        const userData = existingUser.get();
-
-        // Check for correct password
-        const passwordsMatch = await bcrypt.compare(password, existingUser.get().passwordHash);
-        if (passwordsMatch) {
-          console.info("Authentication successful");
-          const {passwordHash: _, ...userDetails} = userData;
-          return done(null, userDetails);
-        }
-
-        console.error("Authentication failed, incorrect password");
+      if (!existingUser) {
+        console.info("No matching user found");
         return done(null, false);
       }
 
-      console.error("User not found");
-      return done(new Error("User not found"));
+      const userData = existingUser.get();
+
+      // Check for correct password
+      const passwordsMatch = await bcrypt.compare(password, existingUser.get().passwordHash);
+      if (!passwordsMatch) {
+        console.info("Incorrect password");
+        return done(null, false);
+      }
+
+      console.info("Authentication successful");
+      const {passwordHash: _, ...userDetails} = userData;
+      return done(null, userDetails);
     }
 ));

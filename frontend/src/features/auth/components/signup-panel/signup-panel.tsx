@@ -3,37 +3,30 @@ import Button from "../../../../shared/components/ui/button/button.tsx";
 import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import Form from "../../../../shared/components/form/form/form.tsx";
 import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
-import {useMutation} from "@tanstack/react-query";
-import {ApiResponse, createNewUser, UserCredentials} from "../../api/queries.ts";
-import {useNavigate} from "react-router-dom";
 import {FormEvent, useState} from "react";
+import useSignupUser from "../../hooks/use-signup-user.ts";
+import useGetLoggedInUser from "../../hooks/use-get-logged-in-user.ts";
+import {useNavigate} from "react-router-dom";
 
 const SignupPanel = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const signupUserMutation = useSignupUser(email, password);
+  const {status, data: loggedInUser} = useGetLoggedInUser();
+  const navigate = useNavigate();
 
-  const createUserQuery = useMutation<ApiResponse, ApiResponse, UserCredentials>({
-    mutationFn: createNewUser,
-    onSuccess: (data: ApiResponse) => {
-      console.info(data.message);
-
-      if (data.success) {
-        navigate("/login");
-      }
-      else {
-        alert(data.message);
-      }
-    },
-    onError: (error: ApiResponse) => {
-      alert(error.message);
-    },
-  });
+  if (status === "success") {
+    // Check if a user is logged in
+    if (loggedInUser.ok) {
+      // User is logged in, so we redirect back to home page
+      navigate("/home");
+    }
+  }
 
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createUserQuery.mutate({email, password});
+    signupUserMutation.mutate();
   };
 
   return (
