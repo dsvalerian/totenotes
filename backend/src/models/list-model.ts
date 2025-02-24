@@ -1,5 +1,6 @@
 import {DataTypes, Model} from "sequelize";
 import sequelize from "../config/database.js";
+import User from "./user-model.js";
 
 export interface ListAttributes {
   id: number,
@@ -9,7 +10,7 @@ export interface ListAttributes {
 
 type ListCreateAttributes = Omit<ListAttributes, "id">;
 
-const List = sequelize.define<Model<ListAttributes, ListCreateAttributes>>("List", {
+const List = sequelize.define<Model<ListAttributes, ListCreateAttributes>>("list", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -18,14 +19,17 @@ const List = sequelize.define<Model<ListAttributes, ListCreateAttributes>>("List
   },
   ownerId: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: User,
+      key: "id"
+    }
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false
   }
 }, {
-  tableName: "shopping_lists",
   timestamps: true,
   underscored: true
 });

@@ -1,6 +1,6 @@
 import sequelize from "../config/database.js";
 import {DataTypes, Model} from "sequelize";
-import List from "./shopping-lists-model.js";
+import List from "./list-model.js";
 import User from "./user-model.js";
 
 export interface ListAccessAttributes {
@@ -11,7 +11,7 @@ export interface ListAccessAttributes {
 
 type ListAccessCreateAttributes = Omit<ListAccessAttributes, "id">;
 
-const ListAccess = sequelize.define<Model<ListAccessAttributes, ListAccessCreateAttributes>>("ListAccess", {
+const ListAccess = sequelize.define<Model<ListAccessAttributes, ListAccessCreateAttributes>>("listAccess", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -35,7 +35,6 @@ const ListAccess = sequelize.define<Model<ListAccessAttributes, ListAccessCreate
     }
   }
 }, {
-  tableName: "shopping_list_access",
   timestamps: true,
   underscored: true
 });

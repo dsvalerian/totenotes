@@ -1,12 +1,14 @@
-import List from "../../models/shopping-lists-model.js";
+import List from "../../models/list-model.js";
 import {Request, Response} from "express";
 import {errorResponse} from "../utils.js";
-import ListAccess from "../../models/shopping-list-access-model.js";
+import ListAccess from "../../models/list-access-model.js";
+import Item from "../../models/item-model.js";
 
 export const getAllLists = async (req: Request, res: Response) => {
   console.info("Getting all lists");
 
   if (!req.user?.id) {
+    console.info("Unauthorized");
     return res.status(400).json(errorResponse("Unauthorized to get lists"));
   }
 
@@ -22,19 +24,40 @@ export const getAllLists = async (req: Request, res: Response) => {
   });
 
   if (allLists) {
-    const allListMetadata = allLists.map(model => {
-      console.log(model.get());
-      return model.get();
-    });
-
-    return res.json(allListMetadata);
+    return res.json(allLists.map(model => model.get()));
   }
+};
+
+export const getList = async (req: Request, res: Response) => {
+  console.info("Getting list");
+
+  if (!req.user?.id) {
+    console.info("Unauthorized");
+    return res.status(400).json(errorResponse("Unauthorized to get list"));
+  }
+
+  const list = await List.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: {
+      model: Item
+    }
+  });
+
+  if (!list) {
+    return res.status(404).json(errorResponse("List not found"));
+  }
+
+  return res.json(list.get());
+
 };
 
 export const createList = async (req: Request, res: Response) => {
   console.info("Creating new list");
 
   if (!req.user?.id) {
+    console.info("Unauthorized");
     return res.status(400).json(errorResponse("Unauthorized to create list"));
   }
 
@@ -50,5 +73,5 @@ export const createList = async (req: Request, res: Response) => {
     userId: req.user.id
   });
 
-  return res.json(list.get());
+  return res.status(201).json(list.get());
 };

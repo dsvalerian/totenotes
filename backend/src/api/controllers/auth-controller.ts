@@ -19,6 +19,7 @@ export const createUser = async (req: Request, res: Response) => {
       }
     });
     if (existingUser) {
+      console.log("User already exists");
       return res.status(400).json(errorResponse("User already exists"));
     }
 
@@ -45,13 +46,14 @@ export const loginUser = async (req: Request, res: Response) => {
   console.info("Logging in user");
 
   try {
-    if (!req.user) {
+    if (!req.user?.id) {
+      console.info("User could not be authorized");
       return res.status(401).json(errorResponse("Could not login user"));
     }
 
     return res.send(req.user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json(errorResponse("Failed to login user"));
   }
 };
@@ -65,19 +67,21 @@ export const logoutUser = async (req: Request, res: Response) => {
   console.info("Logging out user");
 
   try {
-    if (!req.user) {
+    if (!req.user?.id) {
+      console.info("No user to log out");
       return res.status(401).json(errorResponse("No user is logged in"));
     }
 
-    req.logout(err => {
-      if (err) {
+    req.logout(error => {
+      if (error) {
+        console.error(error);
         return res.status(401).json(errorResponse("Failed to log out user"));
       }
 
       return res.json(successResponse("Logged out"));
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json(errorResponse("Failed to logout user"));
   }
 };
