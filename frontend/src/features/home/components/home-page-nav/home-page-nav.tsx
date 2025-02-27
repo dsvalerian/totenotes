@@ -22,13 +22,11 @@ const HomePageNav = ({title, user}: HomePageNavProps) => {
   const {status: loggedInUserStatus, data: loggedInUser} = useGetLoggedInUser();
   const navigate = useNavigate();
 
-  if (loggedInUserStatus === "success") {
-    // Check if a user is logged in
-    if (!loggedInUser.ok) {
-      // No user is logged in, so we redirect back to login page
+  useEffect(() => {
+    if (loggedInUserStatus === "success" && !loggedInUser.ok) {
       navigate("/login");
     }
-  }
+  }, [loggedInUserStatus, loggedInUser, navigate]);
 
   useEffect(() => {
     if (shoppingListStatus === "success" && lists && lists.length > 0) {

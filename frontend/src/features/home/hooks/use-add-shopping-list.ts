@@ -1,11 +1,11 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {addList} from "../api/shopping-lists.ts";
+import {createListQuery} from "../api/lists-queries.ts";
 
 const useAddShoppingList = (listName: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => addList(listName),
+    mutationFn: () => createListQuery(listName),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["shopping-lists"]

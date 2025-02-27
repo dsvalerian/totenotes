@@ -1,11 +1,11 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {createItemQuery} from "../api/items-queries.ts";
+import {deleteItemQuery} from "../api/items-queries.ts";
 
-const useAddShoppingItem = (listId: number, itemName: string) => {
+const useDeleteItem = (listId: number, id: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => createItemQuery(listId, itemName),
+    mutationFn: () => deleteItemQuery(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["shopping-lists", listId],
@@ -14,4 +14,4 @@ const useAddShoppingItem = (listId: number, itemName: string) => {
   });
 };
 
-export default useAddShoppingItem;
+export default useDeleteItem;

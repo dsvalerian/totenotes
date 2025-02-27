@@ -1,5 +1,5 @@
 import {createContext, useContext} from "react";
-import {ShoppingListModel} from "../api/shopping-items.ts";
+import {ShoppingListModel} from "../api/items-queries.ts";
 
 type SelectedShoppingListContextInterface = [ShoppingListModel, (list: ShoppingListModel) => void];
 

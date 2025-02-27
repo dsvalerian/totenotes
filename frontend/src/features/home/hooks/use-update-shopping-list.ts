@@ -1,12 +1,12 @@
-import {ShoppingListModel} from "../api/shopping-items.ts";
+import {ShoppingListModel} from "../api/items-queries.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {updateList} from "../api/shopping-lists.ts";
+import {updateListQuery} from "../api/lists-queries.ts";
 
 const useUpdateShoppingList = (shoppingList: ShoppingListModel) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => updateList(shoppingList),
+    mutationFn: () => updateListQuery(shoppingList),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["shopping-lists"]

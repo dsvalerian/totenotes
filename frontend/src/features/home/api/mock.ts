@@ -1,5 +1,5 @@
 // MOCK DATA, will be replaced by DB calls
-import {ShoppingItemModel, ShoppingListModel} from "./shopping-items.ts";
+import {ShoppingItemModel, ShoppingListModel} from "./items-queries.ts";
 
 const store: (ShoppingListModel & {items: ShoppingItemModel[]})[] = [
   {

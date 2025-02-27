@@ -1,17 +1,17 @@
-import styles from "./shopping-list.module.css";
+import styles from "./shopping-list-container.module.css";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import {ShoppingItemModel} from "../../api/shopping-items.ts";
-import ShoppingItem from "../shopping-item/shopping-item.tsx";
+import {ShoppingItemModel} from "../../api/items-queries.ts";
+import ShoppingListItem from "../shopping-item/shopping-list-item.tsx";
 import {ReactElement, useEffect, useState} from "react";
 import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
-import useShoppingItems from "../../hooks/use-shopping-items.ts";
 import useUpdateShoppingList from "../../hooks/use-update-shopping-list.ts";
 import useAddShoppingItem from "../../hooks/use-add-shopping-item.ts";
+import useShoppingList from "../../hooks/use-shopping-list.ts";
 
-const ShoppingList = () => {
+const ShoppingListContainer = () => {
   const [selectedShoppingList] = useSelectedShoppingListContext();
-  const {status, data: items} = useShoppingItems(selectedShoppingList.id);
+  const {status, data: shoppingListDetails} = useShoppingList(selectedShoppingList.id);
   const [name, setName] = useState(selectedShoppingList.name);
   const updateListMutation = useUpdateShoppingList({...selectedShoppingList, name: name});
   const addItemMutation = useAddShoppingItem(selectedShoppingList.id, "New Item");
@@ -24,9 +24,9 @@ const ShoppingList = () => {
     }
   }, [selectedShoppingList]);
 
-  if (status === "success" && items && items.length > 0) {
-    shoppingListItems = items?.map((item: ShoppingItemModel) =>
-        <ShoppingItem key={item.id} listId={selectedShoppingList.id} item={item} />,
+  if (status === "success" && shoppingListDetails.items) {
+    shoppingListItems = shoppingListDetails.items.map((item: ShoppingItemModel) =>
+        <ShoppingListItem key={item.id} listId={selectedShoppingList.id} item={item} />,
     );
   }
 
@@ -53,4 +53,4 @@ const ShoppingList = () => {
   );
 };
 
-export default ShoppingList;
+export default ShoppingListContainer;

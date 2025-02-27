@@ -1,8 +1,8 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import SignupRoute from "./routes/auth/signup-route.tsx";
 import LoginRoute from "./routes/auth/login-route.tsx";
 import ForgotPasswordRoute from "./routes/auth/forgot-password-route.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import HomeRoute from "./routes/home/home-page-route.tsx";
 
 const queryClient = new QueryClient();

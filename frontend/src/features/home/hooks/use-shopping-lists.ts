@@ -1,10 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
-import {fetchLists} from "../api/shopping-lists.ts";
+import {getAllListsQuery} from "../api/lists-queries.ts";
 
 const useShoppingLists = () => {
   return useQuery({
     queryKey: ["shopping-lists"],
-    queryFn: fetchLists
+    queryFn: getAllListsQuery
   });
 };
 

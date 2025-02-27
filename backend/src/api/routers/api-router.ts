@@ -8,7 +8,7 @@ import itemsRouter from "./items-router.js";
 const apiRouter = express.Router();
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/lists", listsRouter);
-apiRouter.use("/lists/:listId/items", itemsRouter);
+apiRouter.use("/items", itemsRouter);
 apiRouter.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 export default apiRouter;
