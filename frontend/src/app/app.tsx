@@ -1,11 +1,12 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import SignupRoute from "./routes/auth/signup-route.tsx";
-import LoginRoute from "./routes/auth/login-route.tsx";
-import ForgotPasswordRoute from "./routes/auth/forgot-password-route.tsx";
+import SignupPage from "./pages/auth/signup-page.tsx";
+import LoginPage from "./pages/auth/login-page.tsx";
+import ForgotPasswordPage from "./pages/auth/forgot-password-page.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import HomeRoute from "./routes/home/home-page-route.tsx";
+import HomeRoute from "./pages/home/home-page-route.tsx";
 import AuthContextProvider from "../shared/providers/auth-context-provider.tsx";
 import PrivateRoute from "../shared/components/routes/private-route.tsx";
+import GuestRoute from "../shared/components/routes/guest-route.tsx";
 
 const queryClient = new QueryClient();
 
@@ -15,10 +16,18 @@ const App = () => {
         <AuthContextProvider>
           <Router>
             <Routes>
-              <Route path={"/signup"} element={<SignupRoute />} />
-              <Route path={"/login"} element={<LoginRoute />} />
-              <Route path={"/forgotpassword"} element={<ForgotPasswordRoute />} />
+              {/* Guest-only routes */}
+              <Route path="/login" element={<GuestRoute redirect={"/home"} />}>
+                <Route path={"/login"} element={<LoginPage />}/>
+              </Route>
+              <Route path="/signup" element={<GuestRoute redirect={"/home"} />}>
+                <Route path={"/signup"} element={<SignupPage />}/>
+              </Route>
+              <Route path="/forgotpassword" element={<GuestRoute redirect={"/home"} />}>
+                <Route path={"/forgotpassword"} element={<ForgotPasswordPage />}/>
+              </Route>
 
+              {/* Private-only routes */}
               <Route path="/home" element={<PrivateRoute redirect="/login" />}>
                 <Route path="/home" element={<HomeRoute />} />
               </Route>

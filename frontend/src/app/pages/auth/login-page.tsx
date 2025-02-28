@@ -1,7 +1,7 @@
 import AuthLayout from "../../../features/auth/components/auth-layout/auth-layout.tsx";
 import LoginPanel from "../../../features/auth/components/login-panel/login-panel.tsx";
 
-const SignupRoute = () => {
+const LoginPage = () => {
   return (
       <AuthLayout>
         <LoginPanel />
@@ -9,4 +9,4 @@ const SignupRoute = () => {
   );
 };
 
-export default SignupRoute;
+export default LoginPage;
