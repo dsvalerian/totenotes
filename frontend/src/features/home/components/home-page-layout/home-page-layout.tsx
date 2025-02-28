@@ -7,7 +7,7 @@ const HomePageLayout = () => {
   return (
       <div className={styles["layout"]}>
         <SelectedShoppingListProvider>
-          <HomePageNav title={"Shopping Lists"} user={"username@example.com"} />
+          <HomePageNav />
           <div className={styles["page-content"]}>
             <ShoppingListContainer />
           </div>

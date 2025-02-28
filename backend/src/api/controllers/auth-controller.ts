@@ -55,12 +55,17 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(401).json(errorResponse("Invalid credentials"));
     }
 
-    req.login(user, err => {
+    req.login(user, async err => {
       if (err) {
         return res.status(500).json(errorResponse(err.message));
       }
 
-      return res.json(successResponse("Successfully logged in"));
+      const userDetails = await User.findByPk(user.id);
+      if (!userDetails) {
+        return res.status(500).json(errorResponse("Internal server error"));
+      }
+
+      return res.json(stripUserDetails(userDetails.get()));
     });
   });
 

@@ -6,16 +6,16 @@ import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
 import Checkbox from "../../../../shared/components/form/checkbox/checkbox.tsx";
 import {Link} from "react-router-dom";
 import {FormEvent, useState} from "react";
-import useLoginUser from "../../hooks/use-login-user.ts";
+import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
 
 const LoginPanel = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loginUserMutation = useLoginUser(email, password);
+  const {login} = useAuthContext();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginUserMutation.mutate();
+    login(email, password);
   };
 
   return (

@@ -3,8 +3,9 @@ import User from "../types/user.ts";
 
 interface AuthContextType {
   user: User | null,
-  login: (user: User) => void,
+  login: (email: string, password: string) => void,
   logout: () => void,
+  signup: (email: string, password: string) => void,
   isLoading: boolean
 }
 

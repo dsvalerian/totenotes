@@ -4,17 +4,22 @@ import InputField from "../../../../shared/components/form/input-field/input-fie
 import Form from "../../../../shared/components/form/form/form.tsx";
 import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
 import {FormEvent, useState} from "react";
-import useSignupUser from "../../hooks/use-signup-user.ts";
+import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
 
 const SignupPanel = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const signupUserMutation = useSignupUser(email, password);
+  const {signup} = useAuthContext();
 
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signupUserMutation.mutate();
+    if (password === passwordConfirm) {
+      signup(email, password);
+    }
+    else {
+      alert("Passwords do not match");
+    }
   };
 
   return (

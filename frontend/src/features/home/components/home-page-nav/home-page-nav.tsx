@@ -5,18 +5,13 @@ import {ReactElement, useEffect} from "react";
 import useShoppingLists from "../../hooks/use-shopping-lists.ts";
 import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
 import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
-import useLogoutUser from "../../../auth/hooks/use-logout-user.ts";
+import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
 
-type HomePageNavProps = {
-  title: string,
-  user: string,
-};
-
-const HomePageNav = ({title, user}: HomePageNavProps) => {
+const HomePageNav = () => {
   const [selectedShoppingList, setSelectedShoppingList] = useSelectedShoppingListContext();
   const {status: shoppingListStatus, data: lists} = useShoppingLists();
   const addListMutation = useAddShoppingList("New List");
-  const logoutUserMutation = useLogoutUser("/login");
+  const {user, logout} = useAuthContext();
 
   useEffect(() => {
     if (shoppingListStatus === "success" && lists && lists.length > 0) {
@@ -38,21 +33,22 @@ const HomePageNav = ({title, user}: HomePageNavProps) => {
 
   return (
       <nav className={styles["nav"]}>
-        <p className={styles["header"]}>{user}</p>
-        <h2 className={styles["title"]}>{title}</h2>
-        <ul className={styles["item-list"]}>
-          {navItems}
-        </ul>
+        <p className={styles["header"]}>{user?.email || "Loading..."}</p>
+        <h2 className={styles["title"]}>{"Shopping Lists"}</h2>
         <div className={styles["button"]}>
           <Button
               label={"New List"}
               onClick={addListMutation.mutate}
           />
         </div>
+        <ul className={styles["item-list"]}>
+          {navItems}
+        </ul>
         <div className={styles["button"]}>
           <Button
               label={"Logout"}
-              onClick={logoutUserMutation.mutate}
+              onClick={logout}
+              variant="outline"
           />
         </div>
       </nav>
