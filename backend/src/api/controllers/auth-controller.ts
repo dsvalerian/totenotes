@@ -106,7 +106,7 @@ export const getLoggedInUser = async (req: Request, res: Response) => {
       return res.json(stripUserDetails(user.get()));
     }
     else {
-      return res.status(404).json(errorResponse("No user authenticated"));
+      return res.status(401).json(errorResponse("No user authenticated"));
     }
   } catch (error) {
     console.error(error);

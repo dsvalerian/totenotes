@@ -6,8 +6,6 @@ import useShoppingLists from "../../hooks/use-shopping-lists.ts";
 import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
 import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
 import useLogoutUser from "../../../auth/hooks/use-logout-user.ts";
-import useGetLoggedInUser from "../../../auth/hooks/use-get-logged-in-user.ts";
-import {useNavigate} from "react-router-dom";
 
 type HomePageNavProps = {
   title: string,
@@ -19,14 +17,6 @@ const HomePageNav = ({title, user}: HomePageNavProps) => {
   const {status: shoppingListStatus, data: lists} = useShoppingLists();
   const addListMutation = useAddShoppingList("New List");
   const logoutUserMutation = useLogoutUser("/login");
-  const {status: loggedInUserStatus, data: loggedInUser} = useGetLoggedInUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loggedInUserStatus === "success" && !loggedInUser.ok) {
-      navigate("/login");
-    }
-  }, [loggedInUserStatus, loggedInUser, navigate]);
 
   useEffect(() => {
     if (shoppingListStatus === "success" && lists && lists.length > 0) {

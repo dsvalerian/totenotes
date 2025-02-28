@@ -5,24 +5,12 @@ import Form from "../../../../shared/components/form/form/form.tsx";
 import AuthSidePanel from "../auth-side-panel/auth-side-panel.tsx";
 import {FormEvent, useState} from "react";
 import useSignupUser from "../../hooks/use-signup-user.ts";
-import useGetLoggedInUser from "../../hooks/use-get-logged-in-user.ts";
-import {useNavigate} from "react-router-dom";
 
 const SignupPanel = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const signupUserMutation = useSignupUser(email, password);
-  const {status, data: loggedInUser} = useGetLoggedInUser();
-  const navigate = useNavigate();
-
-  if (status === "success") {
-    // Check if a user is logged in
-    if (loggedInUser.ok) {
-      // User is logged in, so we redirect back to home page
-      navigate("/home");
-    }
-  }
 
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
