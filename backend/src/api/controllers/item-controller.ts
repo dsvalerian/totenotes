@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
-import Item from "../../models/item.js";
 
 export const createItem = async (req: Request, res: Response) => {
   console.info("Creating new item");

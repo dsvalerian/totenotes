@@ -1,5 +1,5 @@
 import express from "express";
-import {createList, deleteList, getAllLists, getList, updateList} from "../controllers/lists-controller.js";
+import {createList, deleteList, getAllLists, getList, updateList} from "../controllers/list-controller.js";
 
 const listsRouter = express.Router();
 listsRouter.get("/", getAllLists);

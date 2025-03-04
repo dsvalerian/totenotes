@@ -1,9 +1,5 @@
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
-import List from "../../models/list.js";
-import Item from "../../models/item.js";
-import ListAccess from "../../models/item-access.js";
-import User from "../../models/user.js";
 
 export const getAllLists = async (req: Request, res: Response) => {
   console.info("Getting all lists");

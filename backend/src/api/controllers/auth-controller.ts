@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
 import passport from "passport";
-import User, {UserAttributes} from "../../models/user.js";
+import {db} from "../../database/database.js";
+import {User} from "../../database/user.js";
 
 /**
  * Register a new user.
@@ -14,22 +15,26 @@ export const createUser = async (req: Request, res: Response) => {
 
   // Check for existing user
   try {
-    const existingUser = await User.findOne({
-      where: {
-        email: req.body.email
-      }
-    });
+    const existingUser = await findUserByEmail(req.body.email);
+
     if (existingUser) {
       console.log("User already exists");
       return res.status(400).json(errorResponse("User already exists"));
     }
 
-    const newUser = await User.create({
-      email: req.body.email,
-      passwordHash: await bcrypt.hash(req.body.password, 10)
-    });
+    const currentTime = new Date();
+    const newUser = await db
+        .insertInto("user")
+        .values({
+          email: req.body.email,
+          password_hash: await bcrypt.hash(req.body.password, 10),
+          created_at: currentTime,
+          updated_at: currentTime
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow();
 
-    return res.status(201).json(stripUserDetails(newUser.get()));
+    return res.status(201).json(stripUserDetails(newUser));
   } catch (error) {
     console.error(error);
     return res.status(500).json(errorResponse("Failed to register user"));
@@ -51,7 +56,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     console.log("user, user");
 
-    if (!user) {
+    if (!user?.id) {
       return res.status(401).json(errorResponse("Invalid credentials"));
     }
 
@@ -60,12 +65,17 @@ export const loginUser = async (req: Request, res: Response) => {
         return res.status(500).json(errorResponse(err.message));
       }
 
-      const userDetails = await User.findByPk(user.id);
-      if (!userDetails) {
+      if (!user?.id) {
+        return res.status(401).json(errorResponse("Invalid credentials"));
+      }
+
+      const existingUser = await findUserById(user.id);
+
+      if (!existingUser) {
         return res.status(500).json(errorResponse("Internal server error"));
       }
 
-      return res.json(stripUserDetails(userDetails.get()));
+      return res.json(stripUserDetails(existingUser));
     });
   });
 
@@ -102,13 +112,13 @@ export const logoutUser = async (req: Request, res: Response) => {
 
 export const getLoggedInUser = async (req: Request, res: Response) => {
   try {
-    if (req.isAuthenticated()) {
-      const user = await User.findByPk(req.user.id);
-      if (!user) {
+    if (req.isAuthenticated() && req.user?.id) {
+      const existingUser = await findUserById(req.user.id);
+      if (!existingUser) {
         return res.status(404).json(errorResponse("User does not exist"));
       }
 
-      return res.json(stripUserDetails(user.get()));
+      return res.json(stripUserDetails(existingUser));
     }
     else {
       return res.status(401).json(errorResponse("No user authenticated"));
@@ -119,7 +129,23 @@ export const getLoggedInUser = async (req: Request, res: Response) => {
   }
 };
 
-const stripUserDetails = (user: UserAttributes) => {
-  const {passwordHash: _, ...rest} = user;
+const stripUserDetails = (user: User) => {
+  const {password_hash: _, ...rest} = user;
   return rest;
+};
+
+const findUserById = async (id: number) => {
+  return await db
+      .selectFrom("user")
+      .where("id", "=", id)
+      .selectAll()
+      .executeTakeFirst();
+};
+
+const findUserByEmail = async (email: string) => {
+  return await db
+    .selectFrom("user")
+    .where("email", "=", email)
+    .selectAll()
+    .executeTakeFirst();
 };
