@@ -1,7 +1,7 @@
 import {Strategy} from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
-import User from "../models/user-model.js";
+import User from "../models/user.js";
 
 // Called when creating a session
 passport.serializeUser((user: {id?: number}, done) => {

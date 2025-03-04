@@ -1,10 +1,10 @@
 import styles from "./home-page-nav.module.css";
-import NavItem from "../nav-item/nav-item.tsx";
+import HomePageNavItem from "../home-page-nav-item/home-page-nav-item.tsx";
 import Button from "../../../../shared/components/ui/button/button.tsx";
 import {ReactElement, useEffect} from "react";
 import useShoppingLists from "../../hooks/use-shopping-lists.ts";
 import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
-import useSelectedShoppingListContext from "../../contexts/use-selected-shopping-list-context.ts";
+import useSelectedShoppingListContext from "../../hooks/use-selected-shopping-list-context.ts";
 import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
 
 const HomePageNav = () => {
@@ -22,7 +22,7 @@ const HomePageNav = () => {
   let navItems: ReactElement[] = [];
   if (shoppingListStatus === "success") {
     navItems = lists.map(list =>
-        <NavItem
+        <HomePageNavItem
             key={list.id}
             label={list.name}
             selected={list.id === selectedShoppingList.id}

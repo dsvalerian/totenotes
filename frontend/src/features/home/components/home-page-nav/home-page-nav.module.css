@@ -2,9 +2,10 @@
     background: var(--clr-primary-500);
     min-width: 20rem;
     display: flex;
+    flex-grow: 0;
     flex-direction: column;
-    max-width: 25rem;
     text-wrap: nowrap;
+    max-width: 20rem;
     padding: 2rem;
     gap: 1rem;
 }

@@ -5,6 +5,7 @@ import passport from "passport";
 import "./strategies/local-strategy.js";
 import apiRouter from "./api/routers/api-router.js";
 import sequelize from "./config/database.js";
+import "./models/associations.js";
 import cors from "cors";
 
 dotenv.config();

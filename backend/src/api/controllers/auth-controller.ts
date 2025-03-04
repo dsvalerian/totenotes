@@ -1,8 +1,8 @@
-import User, {UserAttributes} from "../../models/user-model.js";
 import bcrypt from "bcrypt";
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
 import passport from "passport";
+import User, {UserAttributes} from "../../models/user.js";
 
 /**
  * Register a new user.

@@ -1,8 +1,9 @@
-import List from "../../models/list-model.js";
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
-import ListAccess from "../../models/list-access-model.js";
-import Item from "../../models/item-model.js";
+import List from "../../models/list.js";
+import Item from "../../models/item.js";
+import ListAccess from "../../models/item-access.js";
+import User from "../../models/user.js";
 
 export const getAllLists = async (req: Request, res: Response) => {
   console.info("Getting all lists");
@@ -14,16 +15,13 @@ export const getAllLists = async (req: Request, res: Response) => {
 
   const allLists = await List.findAll({
     include: {
-      model: ListAccess,
+      model: User,
       where: {
-        userId: req.user.id
+        id: req.user.id
       },
       required: true,
       attributes: []
-    },
-    order: [
-        ["updatedAt", "DESC"]
-    ]
+    }
   });
 
   if (allLists) {
@@ -52,11 +50,10 @@ export const getList = async (req: Request, res: Response) => {
   });
 
   if (!list) {
-    return res.status(404).json(errorResponse("List not found"));
+    return res.status(404).json(errorResponse("ListModel not found"));
   }
 
   return res.json(list.get());
-
 };
 
 export const createList = async (req: Request, res: Response) => {
@@ -73,11 +70,7 @@ export const createList = async (req: Request, res: Response) => {
     ownerId: req.user.id
   });
 
-  // Create the list access entry in the db
-  await ListAccess.create({
-    listId: list.get().id,
-    userId: req.user.id
-  });
+  list.addUsers(User.findByPk(req.user.id));
 
   return res.status(201).json(list.get());
 };
@@ -93,7 +86,7 @@ export const updateList = async (req: Request, res: Response) => {
   // Get the list from the db
   const list = await List.findByPk(req.body.id);
   if (!list) {
-    return res.status(404).json(errorResponse("List not found"));
+    return res.status(404).json(errorResponse("ListModel not found"));
   }
 
   await list.update({name: req.body.name});
@@ -110,11 +103,15 @@ export const deleteList = async (req: Request, res: Response) => {
   }
 
   // Get the list from the db
-  const list = await List.findByPk(req.params.id);
+  const list = await List.findByPk(req.params.id, {
+    include: {
+      model: Item,
+    }
+  });
   if (!list) {
-    return res.status(404).json(errorResponse("List not found"));
+    return res.status(404).json(errorResponse("ListModel not found"));
   }
 
   await list.destroy();
-  return res.json(successResponse("List deleted"));
+  return res.json(successResponse("ListModel deleted"));
 };

@@ -1,0 +1,15 @@
+.icon {
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.button {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.button:hover {
+    cursor: pointer;
+}

@@ -29,3 +29,15 @@
     align-self: center;
     flex-shrink: 0;
 }
+
+.header-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-right: 0.75rem;
+}
+
+.title-field {
+    flex-grow: 1;
+}
