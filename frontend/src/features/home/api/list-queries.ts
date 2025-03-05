@@ -1,6 +1,6 @@
-import {ShoppingListModel} from "./items-queries.ts";
+import List from "../types/list.ts";
 
-export const getAllListsQuery = async (): Promise<ShoppingListModel[]> => {
+export const getAllListsQuery = async (): Promise<List[]> => {
   const response = await fetch("/api/lists", {
     method: "GET",
     headers: {
@@ -17,24 +17,7 @@ export const getAllListsQuery = async (): Promise<ShoppingListModel[]> => {
   return await response.json();
 };
 
-export const getListQuery = async (listId: number): Promise<ShoppingListModel> => {
-  const response = await fetch(`/api/lists/${listId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw {message: error.error};
-  }
-
-  return await response.json();
-};
-
-export const createListQuery = async (name: string): Promise<ShoppingListModel> => {
+export const createListQuery = async (name: string): Promise<List> => {
   const response = await fetch("/api/lists", {
     method: "POST",
     headers: {
@@ -52,7 +35,7 @@ export const createListQuery = async (name: string): Promise<ShoppingListModel> 
   return await response.json();
 };
 
-export const updateListQuery = async (list: ShoppingListModel): Promise<ShoppingListModel> => {
+export const updateListQuery = async (list: List): Promise<List> => {
   const response = await fetch("/api/lists", {
     method: "PUT",
     headers: {

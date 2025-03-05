@@ -45,7 +45,8 @@ const AuthContextProvider = ({children}: PropsWithChildren) => {
 
   const signup = async (email: string, password: string) => {
     try {
-      setUser(await createNewUserQuery(email, password));
+      await createNewUserQuery(email, password);
+      setUser(await loginUserQuery(email, password));
     } catch (err) {
       console.error(err instanceof Error ? err.message : "Failed to sign up user");
       setUser(null);

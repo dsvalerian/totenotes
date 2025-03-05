@@ -1,36 +1,28 @@
 import styles from "./shopping-list-container.module.css";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import {ShoppingItemModel} from "../../api/items-queries.ts";
-import ShoppingListItem from "../shopping-item/shopping-list-item.tsx";
-import {ReactElement, useEffect, useState} from "react";
 import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
-import useSelectedShoppingListContext from "../../hooks/use-selected-shopping-list-context.ts";
-import useUpdateShoppingList from "../../hooks/use-update-shopping-list.ts";
-import useAddShoppingItem from "../../hooks/use-add-shopping-item.ts";
-import useShoppingList from "../../hooks/use-shopping-list.ts";
+import useSelectedListContext from "../../hooks/use-selected-list-context.ts";
 import DeleteButton from "../../../../shared/components/ui/delete-button/delete-button.tsx";
-import useDeleteList from "../../hooks/use-delete-list.ts";
+import useList from "../../hooks/use-list.ts";
+import {useEffect, useState} from "react";
 
 const ShoppingListContainer = () => {
-  const [selectedShoppingList] = useSelectedShoppingListContext();
-  const {status, data: shoppingListDetails} = useShoppingList(selectedShoppingList.id);
-  const [name, setName] = useState(selectedShoppingList.name);
-  const updateListMutation = useUpdateShoppingList({...selectedShoppingList, name: name});
-  const deleteListMutation = useDeleteList(selectedShoppingList.id);
-  const addItemMutation = useAddShoppingItem(selectedShoppingList.id, "New Item");
-
-  let shoppingListItems: ReactElement[] = [];
+  const [selectedListId] = useSelectedListContext();
+  const {data: selectedList, isLoading, error} = useList(selectedListId);
+  const [listName, setListName] = useState<string>("");
 
   useEffect(() => {
-    if (selectedShoppingList) {
-      setName(selectedShoppingList.name);
+    if (!isLoading && !error && selectedList) {
+      setListName(selectedList.name);
     }
-  }, [selectedShoppingList]);
+  }, [selectedList, error, isLoading]);
 
-  if (status === "success" && shoppingListDetails.items) {
-    shoppingListItems = shoppingListDetails.items.map((item: ShoppingItemModel) =>
-        <ShoppingListItem key={item.id} listId={selectedShoppingList.id} item={item} />,
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -38,22 +30,22 @@ const ShoppingListContainer = () => {
         <div className={styles["header-bar"]}>
           <div className={styles["title-field"]}>
             <InputField
-                value={name}
+                value={listName}
                 variant={"transparent"}
                 size={"large"}
-                onChange={e => setName(e.target.value)}
-                onBlur={updateListMutation.mutate}
+                onChange={e => setListName(e.target.value)}
+                onBlur={() => console.log("blur")}
             />
           </div>
-          <DeleteButton onClick={deleteListMutation.mutate} />
+          <DeleteButton onClick={() => console.log("delete")} />
         </div>
         <ul className={styles["shopping-list"]}>
-          {shoppingListItems}
+          items go here
         </ul>
         <div className={styles["button-wrapper"]}>
           <Button
               label={"New Item"}
-              onClick={addItemMutation.mutate}
+              onClick={() => console.log("new item button")}
           />
         </div>
       </div>

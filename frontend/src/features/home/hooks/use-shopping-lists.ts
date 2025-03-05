@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {getAllListsQuery} from "../api/lists-queries.ts";
+import {getAllListsQuery} from "../api/list-queries.ts";
 
 const useShoppingLists = () => {
   return useQuery({

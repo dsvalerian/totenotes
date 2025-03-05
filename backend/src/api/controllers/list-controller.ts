@@ -96,7 +96,7 @@ export const updateList = async (req: Request, res: Response) => {
         name: req.body.name,
         updated_at: new Date()
       })
-      .where("id", "=", parseInt(req.params.id))
+      .where("id", "=", parseInt(req.body.id))
       .returningAll()
       .executeTakeFirst();
 
@@ -117,13 +117,25 @@ export const deleteList = async (req: Request, res: Response) => {
 
   // todo check list access
 
-  const deletedItem = await db
+  // Delete the associated items first
+  const deletedItems = await db
+      .deleteFrom("item")
+      .where("list_id", "=", parseInt(req.params.id))
+      .returningAll()
+      .execute();
+
+  if (!deletedItems) {
+    return res.status(500).json(errorResponse("Could not delete items in list"));
+  }
+
+  // Then delete the list itself
+  const deletedList = await db
       .deleteFrom("list")
       .where("id", "=", parseInt(req.params.id))
       .returningAll()
       .executeTakeFirst();
 
-  if (!deletedItem) {
+  if (!deletedList) {
     return res.status(404).json(errorResponse("Could not delete list"));
   }
 

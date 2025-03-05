@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {deleteListQuery} from "../api/lists-queries.ts";
+import {deleteListQuery} from "../api/list-queries.ts";
 
 const useDeleteList = (id: number) => {
   const queryClient = useQueryClient();

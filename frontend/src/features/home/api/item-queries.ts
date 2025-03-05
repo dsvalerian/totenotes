@@ -1,17 +1,6 @@
-export interface ShoppingItemModel {
-  id: number,
-  name: string,
-  quantity: number,
-  quantityUnit?: string
-}
+import Item from "../types/item.ts";
 
-export interface ShoppingListModel {
-  id: number,
-  name: string,
-  items?: ShoppingItemModel[]
-}
-
-export const createItemQuery = async (listId: number, name: string): Promise<ShoppingItemModel | null> => {
+export const createItemQuery = async (listId: number, name: string): Promise<Item | null> => {
   const response = await fetch("/api/items", {
     method: "POST",
     headers: {
@@ -29,7 +18,7 @@ export const createItemQuery = async (listId: number, name: string): Promise<Sho
   return await response.json();
 };
 
-export const updateItemQuery = async (item: ShoppingItemModel): Promise<ShoppingItemModel> => {
+export const updateItemQuery = async (item: Item): Promise<Item> => {
   const response = await fetch("/api/items", {
     method: "PUT",
     headers: {

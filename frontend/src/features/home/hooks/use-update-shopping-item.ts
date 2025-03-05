@@ -1,4 +1,4 @@
-import {ShoppingItemModel, updateItemQuery} from "../api/items-queries.ts";
+import {ShoppingItemModel, updateItemQuery} from "../api/item-queries.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const useUpdateShoppingItem = (listId: number, shoppingItem: ShoppingItemModel) => {

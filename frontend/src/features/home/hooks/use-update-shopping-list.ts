@@ -1,6 +1,6 @@
-import {ShoppingListModel} from "../api/items-queries.ts";
+import {ShoppingListModel} from "../api/item-queries.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {updateListQuery} from "../api/lists-queries.ts";
+import {updateListQuery} from "../api/list-queries.ts";
 
 const useUpdateShoppingList = (shoppingList: ShoppingListModel) => {
   const queryClient = useQueryClient();

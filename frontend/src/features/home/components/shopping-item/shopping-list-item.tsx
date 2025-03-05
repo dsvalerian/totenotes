@@ -1,5 +1,5 @@
 import styles from "./shopping-list-item.module.css";
-import {ShoppingItemModel} from "../../api/items-queries.ts";
+import {ShoppingItemModel} from "../../api/item-queries.ts";
 import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import {useState} from "react";
 import useUpdateShoppingItem from "../../hooks/use-update-shopping-item.ts";

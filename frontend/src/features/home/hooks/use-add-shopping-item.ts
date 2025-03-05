@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {createItemQuery} from "../api/items-queries.ts";
+import {createItemQuery} from "../api/item-queries.ts";
 
 const useAddShoppingItem = (listId: number, itemName: string) => {
   const queryClient = useQueryClient();

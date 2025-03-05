@@ -1,32 +1,22 @@
 import styles from "./home-page-nav.module.css";
 import HomePageNavItem from "../home-page-nav-item/home-page-nav-item.tsx";
 import Button from "../../../../shared/components/ui/button/button.tsx";
-import {ReactElement, useEffect} from "react";
+import {ReactElement} from "react";
 import useShoppingLists from "../../hooks/use-shopping-lists.ts";
 import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
-import useSelectedShoppingListContext from "../../hooks/use-selected-shopping-list-context.ts";
 import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
 
 const HomePageNav = () => {
-  const [selectedShoppingList, setSelectedShoppingList] = useSelectedShoppingListContext();
-  const {status: shoppingListStatus, data: lists} = useShoppingLists();
+  const {status, data: lists} = useShoppingLists();
   const addListMutation = useAddShoppingList("New List");
   const {user, logout} = useAuthContext();
 
-  useEffect(() => {
-    if (shoppingListStatus === "success" && lists && lists.length > 0) {
-      setSelectedShoppingList(lists[0]);
-    }
-  }, [shoppingListStatus, lists, setSelectedShoppingList]);
-
   let navItems: ReactElement[] = [];
-  if (shoppingListStatus === "success") {
+  if (status === "success") {
     navItems = lists.map(list =>
         <HomePageNavItem
-            key={list.id}
-            label={list.name}
-            selected={list.id === selectedShoppingList.id}
-            onClick={() => setSelectedShoppingList(list)}
+            key={"home-page-nav-item=" + list.id}
+            listId={list.id}
         />
     );
   }

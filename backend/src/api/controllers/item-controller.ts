@@ -31,7 +31,7 @@ export const createItem = async (req: Request, res: Response) => {
 };
 
 export const updateItem = async (req: Request, res: Response) => {
-  console.info("Updating item");
+  console.info("Updating item", req.body);
 
   if (!req.user?.id) {
     console.info("Unauthorized");
