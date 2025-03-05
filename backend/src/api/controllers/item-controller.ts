@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
+import {db} from "../../database/database.js";
 
 export const createItem = async (req: Request, res: Response) => {
   console.info("Creating new item");
@@ -9,17 +10,24 @@ export const createItem = async (req: Request, res: Response) => {
     return res.status(400).json(errorResponse("Not authorized to create items"));
   }
 
-  const newItem = await Item.create({
-    name: req.body.name,
-    listId: Number(req.body.listId)
-  });
+  const currentTime = new Date();
+  const newItem = await db
+      .insertInto("item")
+      .values({
+        name: req.body.name,
+        list_id: req.body.listId,
+        created_at: currentTime,
+        updated_at: currentTime
+      })
+      .returningAll()
+      .executeTakeFirst();
 
   if (!newItem) {
     console.error("Could not create new item");
     return res.status(500).json(errorResponse("Could not create item"));
   }
 
-  return res.status(201).json(newItem.get());
+  return res.status(201).json(newItem);
 };
 
 export const updateItem = async (req: Request, res: Response) => {
@@ -31,14 +39,21 @@ export const updateItem = async (req: Request, res: Response) => {
   }
 
   // Get the item from the db
-  const item = await Item.findByPk(req.body.id);
-  if (!item) {
+  const updatedItem = await db
+      .updateTable("item")
+      .set({
+        name: req.body.name,
+        updated_at: new Date()
+      })
+      .where("id", "=", req.user.id)
+      .returningAll()
+      .executeTakeFirst();
+
+  if (!updatedItem) {
     return res.status(404).json(errorResponse("Item not found"));
   }
 
-  await item.update({name: req.body.name});
-
-  return res.json(item.get());
+  return res.json(updatedItem);
 };
 
 export const deleteItem = async (req: Request, res: Response) => {
@@ -49,12 +64,16 @@ export const deleteItem = async (req: Request, res: Response) => {
     return res.status(400).json(errorResponse("Unauthorized to delete item"));
   }
 
+  const deletedItem = await db
+      .deleteFrom("item")
+      .where("id", "=", parseInt(req.params.id))
+      .returningAll()
+      .executeTakeFirst();
+
   // Get the item from the db
-  const item = await Item.findByPk(req.params.id);
-  if (!item) {
-    return res.status(404).json(errorResponse("Item not found"));
+  if (!deletedItem) {
+    return res.status(404).json(errorResponse("Item could not be deleted"));
   }
 
-  await item.destroy();
   return res.json(successResponse("Item deleted"));
 };

@@ -3,8 +3,10 @@ import {ListTable} from "./list.js";
 import {ItemTable} from "./item.js";
 import {ListAccessTable} from "./list-access.js";
 import {Kysely, PostgresDialect} from "kysely";
-import {Pool} from "pg";
+import pg from "pg";
 import dotenv from "dotenv";
+
+const {Pool} = pg;
 
 export interface Database {
   user: UserTable,
@@ -28,3 +30,5 @@ const dialect = new PostgresDialect({
 export const db = new Kysely<Database>({
   dialect,
 });
+
+console.info("Connected to postgres db");

@@ -2,17 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import passport from "passport";
-import "./strategies/local-strategy.js";
+import "./api/strategies/local-strategy.js";
 import apiRouter from "./api/routers/api-router.js";
-import sequelize from "./database/database.js";
-import "./models/associations.js";
 import cors from "cors";
 
 dotenv.config();
-
-// Connect to db
-await sequelize.authenticate();
-console.log("Connected to Postgres DB");
 
 // Create the app
 const app = express();

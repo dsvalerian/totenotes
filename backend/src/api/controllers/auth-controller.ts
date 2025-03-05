@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import {Request, Response} from "express";
-import {errorResponse, successResponse} from "../utils.js";
+import {errorResponse, findUserByEmail, findUserById, successResponse} from "../utils.js";
 import passport from "passport";
 import {db} from "../../database/database.js";
 import {User} from "../../database/user.js";
@@ -32,7 +32,11 @@ export const createUser = async (req: Request, res: Response) => {
           updated_at: currentTime
         })
         .returningAll()
-        .executeTakeFirstOrThrow();
+        .executeTakeFirst();
+
+    if (!newUser) {
+      return res.status(500).json(errorResponse("Could not create new user"));
+    }
 
     return res.status(201).json(stripUserDetails(newUser));
   } catch (error) {
@@ -132,20 +136,4 @@ export const getLoggedInUser = async (req: Request, res: Response) => {
 const stripUserDetails = (user: User) => {
   const {password_hash: _, ...rest} = user;
   return rest;
-};
-
-const findUserById = async (id: number) => {
-  return await db
-      .selectFrom("user")
-      .where("id", "=", id)
-      .selectAll()
-      .executeTakeFirst();
-};
-
-const findUserByEmail = async (email: string) => {
-  return await db
-    .selectFrom("user")
-    .where("email", "=", email)
-    .selectAll()
-    .executeTakeFirst();
 };
