@@ -1,6 +1,6 @@
 import styles from "./home-page-layout.module.css";
 import HomePageNav from "../home-page-nav/home-page-nav.tsx";
-import ShoppingListContainer from "../shopping-list-container/shopping-list-container.tsx";
+import ListContainer from "../list-container/list-container.tsx";
 import SelectedListProvider from "../../providers/selected-list-provider.tsx";
 
 const HomePageLayout = () => {
@@ -9,7 +9,7 @@ const HomePageLayout = () => {
         <SelectedListProvider>
           <HomePageNav />
           <div className={styles["page-content"]}>
-            <ShoppingListContainer />
+            <ListContainer />
           </div>
         </SelectedListProvider>
       </div>

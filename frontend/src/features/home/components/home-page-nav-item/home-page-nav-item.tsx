@@ -1,32 +1,23 @@
 import styles from "./home-page-nav-item.module.css";
 import useSelectedListContext from "../../hooks/use-selected-list-context.ts";
-import useList from "../../hooks/use-list.ts";
+import {ListMetadata} from "../../hooks/use-lists.ts";
 
 interface NavItemProps {
-  listId: number
+  list: ListMetadata
 }
 
-const HomePageNavItem = ({listId}: NavItemProps) => {
+const HomePageNavItem = ({list}: NavItemProps) => {
   const [selectedListId, setSelectedListId] = useSelectedListContext();
-  const {data: list, isLoading, error} = useList(listId);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  const isSelected = selectedListId && selectedListId === listId;
+  const isSelected = selectedListId && selectedListId === list.id;
 
   return (
       <li
           className={`${styles["nav-item"]} ${isSelected && styles["selected"]}`}
-          onClick={() => setSelectedListId(listId)}
+          onClick={() => setSelectedListId(list.id)}
       >
         <div className={styles["list-label"]}>
-          {list?.name}
+          {list.name}
         </div>
       </li>
   );

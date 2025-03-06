@@ -2,21 +2,19 @@ import styles from "./home-page-nav.module.css";
 import HomePageNavItem from "../home-page-nav-item/home-page-nav-item.tsx";
 import Button from "../../../../shared/components/ui/button/button.tsx";
 import {ReactElement} from "react";
-import useShoppingLists from "../../hooks/use-shopping-lists.ts";
-import useAddShoppingList from "../../hooks/use-add-shopping-list.ts";
 import useAuthContext from "../../../../shared/hooks/use-auth-context.ts";
+import useLists from "../../hooks/use-lists.ts";
 
 const HomePageNav = () => {
-  const {status, data: lists} = useShoppingLists();
-  const addListMutation = useAddShoppingList("New List");
+  const {getLists, createList} = useLists();
   const {user, logout} = useAuthContext();
 
   let navItems: ReactElement[] = [];
-  if (status === "success") {
-    navItems = lists.map(list =>
+  if (getLists.status === "success") {
+    navItems = getLists.data.map(list =>
         <HomePageNavItem
             key={"home-page-nav-item=" + list.id}
-            listId={list.id}
+            list={list}
         />
     );
   }
@@ -28,7 +26,7 @@ const HomePageNav = () => {
         <div className={styles["button"]}>
           <Button
               label={"New List"}
-              onClick={addListMutation.mutate}
+              onClick={() => createList.mutate({name: "New List"})}
           />
         </div>
         <ul className={styles["item-list"]}>

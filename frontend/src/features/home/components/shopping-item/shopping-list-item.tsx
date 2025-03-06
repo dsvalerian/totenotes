@@ -1,20 +1,15 @@
 import styles from "./shopping-list-item.module.css";
-import {ShoppingItemModel} from "../../api/item-queries.ts";
 import InputField from "../../../../shared/components/form/input-field/input-field.tsx";
 import {useState} from "react";
-import useUpdateShoppingItem from "../../hooks/use-update-shopping-item.ts";
-import useDeleteItem from "../../hooks/use-delete-item.ts";
 import Button from "../../../../shared/components/ui/button/button.tsx";
+import Item from "../../types/item.ts";
 
 interface ShoppingItemProps {
-  listId: number,
-  item: ShoppingItemModel
+  item: Item
 }
 
-const ShoppingListItem = ({listId, item}: ShoppingItemProps) => {
+const ShoppingListItem = ({item}: ShoppingItemProps) => {
   const [name, setName] = useState(item.name);
-  const updateItemMutation = useUpdateShoppingItem(listId, {...item, name});
-  const deleteItemMutation = useDeleteItem(listId, item.id);
 
   return (
       <li className={styles["shopping-item"]}>
@@ -23,11 +18,11 @@ const ShoppingListItem = ({listId, item}: ShoppingItemProps) => {
               value={name}
               onChange={e => setName(e.target.value)}
               variant={"transparent"}
-              onBlur={updateItemMutation.mutate}
+              onBlur={() => console.log("blur")}
           />
         </div>
         <div>
-          <Button label={"Delete"} onClick={() => deleteItemMutation.mutate()} />
+          <Button label={"Delete"} onClick={() => console.log("delete item")} />
         </div>
       </li>
   );
