@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
-import {db} from "../../database/database.js";
+import {db} from "../database/database.js";
 
 export const getAllLists = async (req: Request, res: Response) => {
   console.info("Getting all lists");
@@ -35,7 +35,7 @@ export const getList = async (req: Request, res: Response) => {
 
   const list = await db
       .selectFrom("list")
-      .where("id", "=", parseInt(req.params.id))
+      .where("id", "=", parseInt(req.params.listId))
       .selectAll()
       .executeTakeFirst();
 
@@ -45,7 +45,7 @@ export const getList = async (req: Request, res: Response) => {
 
   const listItems = await db
       .selectFrom("item")
-      .where("list_id", "=", parseInt(req.params.id))
+      .where("list_id", "=", parseInt(req.params.listId))
       .selectAll()
       .execute();
 
@@ -96,7 +96,7 @@ export const updateList = async (req: Request, res: Response) => {
         name: req.body.name,
         updated_at: new Date()
       })
-      .where("id", "=", parseInt(req.body.id))
+      .where("id", "=", parseInt(req.params.listId))
       .returningAll()
       .executeTakeFirst();
 
@@ -120,7 +120,7 @@ export const deleteList = async (req: Request, res: Response) => {
   // Delete the associated items first
   const deletedItems = await db
       .deleteFrom("item")
-      .where("list_id", "=", parseInt(req.params.id))
+      .where("list_id", "=", parseInt(req.params.listId))
       .returningAll()
       .execute();
 
@@ -131,7 +131,7 @@ export const deleteList = async (req: Request, res: Response) => {
   // Then delete the list itself
   const deletedList = await db
       .deleteFrom("list")
-      .where("id", "=", parseInt(req.params.id))
+      .where("id", "=", parseInt(req.params.listId))
       .returningAll()
       .executeTakeFirst();
 

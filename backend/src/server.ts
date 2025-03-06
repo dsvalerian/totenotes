@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import passport from "passport";
-import "./api/strategies/local-strategy.js";
-import apiRouter from "./api/routers/api-router.js";
+import "./strategies/local-strategy.js";
+import apiRouter from "./routers/api-router.js";
 import cors from "cors";
 
 dotenv.config();

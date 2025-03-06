@@ -8,20 +8,18 @@ import ShoppingListItem from "../shopping-item/shopping-list-item.tsx";
 import useList from "../../hooks/use-list.ts";
 
 const ListContainer = () => {
-  const [selectedListId] = useSelectedListContext();
+  const [selectedListId, setSelectedListId] = useSelectedListContext();
   const {getList, updateList, deleteList} = useList(selectedListId);
   const [listName, setListName] = useState<string>("");
   const [isUserEditing, setIsUserEditing] = useState(false);
 
   useEffect(() => {
-    if (getList.status === "success" && !isUserEditing) {
+    if (getList?.status === "success" && !isUserEditing) {
       setListName(getList.data.name);
     }
-  }, [selectedListId, getList]);
+  }, [getList, isUserEditing]);
 
-  console.log(getList.status, getList.data);
-
-  if (getList.status === "pending") {
+  if (getList.status === "pending" || !getList) {
     return <div></div>;
   }
 
@@ -39,8 +37,12 @@ const ListContainer = () => {
     setIsUserEditing(false);
   };
 
-  const handleDeleteList = () => {
-    deleteList.mutate();
+  const handleDeleteList = async () => {
+    deleteList.mutate(undefined, {
+      onSuccess: () => {
+        setSelectedListId(null);
+      }
+    });
   };
 
   return (

@@ -41,7 +41,7 @@ const createListQuery = async (list: ListCreation): Promise<ListMetadata> => {
   return await response.json();
 };
 
-const QUERY_CACHE_KEY = "shopping-lists";
+const QUERY_CACHE_KEY = "lists";
 
 // Custom hook that returns cached/queried lists and creation function
 const useLists = () => {

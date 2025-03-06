@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import {Request, Response} from "express";
 import {errorResponse, findUserByEmail, findUserById, successResponse} from "../utils.js";
 import passport from "passport";
-import {db} from "../../database/database.js";
-import {User} from "../../database/user.js";
+import {db} from "../database/database.js";
+import {User} from "../database/user.js";
 
 /**
  * Register a new user.

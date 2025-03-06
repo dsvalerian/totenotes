@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {errorResponse, successResponse} from "../utils.js";
-import {db} from "../../database/database.js";
+import {db} from "../database/database.js";
 
 export const createItem = async (req: Request, res: Response) => {
   console.info("Creating new item");
@@ -15,7 +15,7 @@ export const createItem = async (req: Request, res: Response) => {
       .insertInto("item")
       .values({
         name: req.body.name,
-        list_id: req.body.listId,
+        list_id: parseInt(req.params.listId),
         created_at: currentTime,
         updated_at: currentTime
       })
@@ -66,7 +66,7 @@ export const deleteItem = async (req: Request, res: Response) => {
 
   const deletedItem = await db
       .deleteFrom("item")
-      .where("id", "=", parseInt(req.params.id))
+      .where("id", "=", parseInt(req.params.itemId))
       .returningAll()
       .executeTakeFirst();
 

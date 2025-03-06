@@ -1,7 +1,7 @@
 import {Strategy} from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
-import {db} from "../../database/database.js";
+import {db} from "../database/database.js";
 import {findUserByEmail, findUserById} from "../utils.js";
 
 // Called when creating a session

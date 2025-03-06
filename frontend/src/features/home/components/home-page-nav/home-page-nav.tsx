@@ -11,12 +11,15 @@ const HomePageNav = () => {
 
   let navItems: ReactElement[] = [];
   if (getLists.status === "success") {
-    navItems = getLists.data.map(list =>
-        <HomePageNavItem
-            key={"home-page-nav-item=" + list.id}
-            list={list}
-        />
-    );
+    // Create nav items, sorted by updated date
+    navItems = getLists.data
+        //.sort((a, b) => a.updated_at - b.updated_at)
+        .map(list =>
+            <HomePageNavItem
+                key={"home-page-nav-item=" + list.id}
+                list={list}
+            />
+        );
   }
 
   return (

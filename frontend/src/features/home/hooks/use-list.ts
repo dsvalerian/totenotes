@@ -4,10 +4,10 @@ import Item from "../types/item.ts";
 
 export interface List {
   id: number,
-  ownerId: number,
+  owner_id: number,
   name: string,
-  createdAt: Date,
-  updatedAt: Date,
+  created_at: Date,
+  updated_at: Date,
   items: Item[]
 }
 
@@ -65,10 +65,10 @@ const deleteListQuery = async (listId: number): Promise<null> => {
     throw {message: error.error};
   }
 
-  return await response.json();
+   return await response.json();
 };
 
-const QUERY_CACHE_KEY = "shopping-lists";
+const QUERY_CACHE_KEY = "lists";
 
 // Custom hook that returns cached/queried lists and update/delete functions
 const useList = (listId: number | null) => {
@@ -90,13 +90,13 @@ const useList = (listId: number | null) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [QUERY_CACHE_KEY, listId]
+        queryKey: [QUERY_CACHE_KEY]
       });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       if (!listId) {
         return Promise.reject("No list selected");
       }
@@ -104,8 +104,13 @@ const useList = (listId: number | null) => {
       return deleteListQuery(listId);
     },
     onSuccess: async () => {
+      // Invalidating queries causes a refetch on all the child caches, including the one storing this newly-deleted
+      // list. This causes failing refetches until it gives up. To prevent it from attempting to refetch the deleted
+      // list, we remove the query from the cache entirely before invalidating.
+      queryClient.removeQueries({queryKey: [QUERY_CACHE_KEY, listId]});
+
       await queryClient.invalidateQueries({
-        queryKey: [QUERY_CACHE_KEY]
+        queryKey: [QUERY_CACHE_KEY],
       });
     }
   });
