@@ -1,9 +1,10 @@
-.shopping-item {
+.list-item {
     list-style: none;
     height: 3.5rem;
     display: flex;
+    gap: 0.5rem;
     align-items: center;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     border-radius: var(--radius-large);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     font-size: var(--fs-500);

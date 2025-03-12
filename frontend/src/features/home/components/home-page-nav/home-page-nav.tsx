@@ -13,7 +13,7 @@ const HomePageNav = () => {
   if (getLists.status === "success") {
     // Create nav items, sorted by updated date
     navItems = getLists.data
-        //.sort((a, b) => a.updated_at - b.updated_at)
+        .sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at))
         .map(list =>
             <HomePageNavItem
                 key={"home-page-nav-item=" + list.id}

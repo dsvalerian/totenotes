@@ -45,7 +45,7 @@ export const updateItem = async (req: Request, res: Response) => {
         name: req.body.name,
         updated_at: new Date()
       })
-      .where("id", "=", req.user.id)
+      .where("id", "=", parseInt(req.params.itemId))
       .returningAll()
       .executeTakeFirst();
 

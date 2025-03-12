@@ -1,13 +1,12 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-
-import Item from "../types/item.ts";
+import {Item, ItemCreate} from "./use-item.ts";
 
 export interface List {
   id: number,
   owner_id: number,
   name: string,
-  created_at: Date,
-  updated_at: Date,
+  created_at: string,
+  updated_at: string,
   items: Item[]
 }
 
@@ -68,6 +67,24 @@ const deleteListQuery = async (listId: number): Promise<null> => {
    return await response.json();
 };
 
+const createItemQuery = async (listId: number, item: ItemCreate) => {
+  const response = await fetch(`/api/lists/${listId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+          "Accept": "application/json"
+    },
+    body: JSON.stringify(item)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw {message: error.error};
+  }
+
+  return await response.json();
+};
+
 const QUERY_CACHE_KEY = "lists";
 
 // Custom hook that returns cached/queried lists and update/delete functions
@@ -115,10 +132,26 @@ const useList = (listId: number | null) => {
     }
   });
 
+  const createItemMutation = useMutation({
+    mutationFn: async (item: ItemCreate) => {
+      if (!listId) {
+        return Promise.reject("No list selected");
+      }
+
+      return createItemQuery(listId, item);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_CACHE_KEY, listId],
+      });
+    }
+  });
+
   return {
     getList: getQuery,
     updateList: updateMutation,
     deleteList: deleteMutation,
+    createItem: createItemMutation,
   };
 };
 

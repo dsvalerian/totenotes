@@ -4,15 +4,21 @@ import InputField from "../../../../shared/components/form/input-field/input-fie
 import useSelectedListContext from "../../hooks/use-selected-list-context.ts";
 import DeleteButton from "../../../../shared/components/ui/delete-button/delete-button.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
-import ShoppingListItem from "../shopping-item/shopping-list-item.tsx";
+import ListItem from "../list-item/list-item.tsx";
 import useList from "../../hooks/use-list.ts";
+import {ItemCreate} from "../../hooks/use-item.ts";
+
+const NEW_ITEM: ItemCreate = {
+  name: "New Item",
+};
 
 const ListContainer = () => {
   const [selectedListId, setSelectedListId] = useSelectedListContext();
-  const {getList, updateList, deleteList} = useList(selectedListId);
+  const {getList, updateList, deleteList, createItem} = useList(selectedListId);
   const [listName, setListName] = useState<string>("");
   const [isUserEditing, setIsUserEditing] = useState(false);
 
+  // Set the initial name to that of the selected list.
   useEffect(() => {
     if (getList?.status === "success" && !isUserEditing) {
       setListName(getList.data.name);
@@ -45,6 +51,10 @@ const ListContainer = () => {
     });
   };
 
+  const itemElements = getList.data.items
+      .sort((a, b) => a.id - b.id)
+      .map(item => <ListItem key={"list-item-" + item.id} item={item} />);
+
   return (
       <div className={styles["page-content"]}>
         <div className={styles["header-bar"]}>
@@ -60,12 +70,12 @@ const ListContainer = () => {
           <DeleteButton onClick={handleDeleteList} />
         </div>
         <ul className={styles["shopping-list"]}>
-          {getList.data.items.map(item => <ShoppingListItem key={"list-item-" + item.id} item={item} />)}
+          {itemElements}
         </ul>
         <div className={styles["button-wrapper"]}>
           <Button
               label={"New Item"}
-              onClick={() => console.log("new item button")}
+              onClick={() => createItem.mutate(NEW_ITEM)}
           />
         </div>
       </div>
