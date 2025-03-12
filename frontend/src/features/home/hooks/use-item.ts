@@ -3,12 +3,13 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 export interface Item {
   id: number,
   name: string,
+  checked: boolean,
   list_id: number,
-  created_at: Date,
-  updated_at: Date
+  created_at: string,
+  updated_at: string
 }
 
-type ItemUpdate = Pick<Item, "name">;
+type ItemUpdate = Pick<Item, "name" | "checked">;
 export type ItemCreate = Pick<Item, "name">;
 
 const deleteItemQuery = async (listId: number, itemId: number) => {

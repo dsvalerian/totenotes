@@ -15,6 +15,7 @@ export const createItem = async (req: Request, res: Response) => {
       .insertInto("item")
       .values({
         name: req.body.name,
+        checked: false,
         list_id: parseInt(req.params.listId),
         created_at: currentTime,
         updated_at: currentTime
@@ -43,6 +44,7 @@ export const updateItem = async (req: Request, res: Response) => {
       .updateTable("item")
       .set({
         name: req.body.name,
+        checked: req.body.checked,
         updated_at: new Date()
       })
       .where("id", "=", parseInt(req.params.itemId))

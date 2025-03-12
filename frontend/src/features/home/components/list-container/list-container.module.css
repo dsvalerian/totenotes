@@ -9,7 +9,7 @@
     box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.3);
 }
 
-.shopping-list {
+.list {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -20,8 +20,18 @@
     scrollbar-color: var(--clr-neutral-400) white;
 }
 
-.shopping-list > * {
+.list > * {
     flex-shrink: 0;
+}
+
+.no-items-display {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--fs-600);
 }
 
 .button-wrapper {

@@ -12,6 +12,8 @@ const NEW_ITEM: ItemCreate = {
   name: "New Item",
 };
 
+const NO_ITEMS_DISPLAY = <div className={styles["no-items-display"]}>Add an item to get started</div>;
+
 const ListContainer = () => {
   const [selectedListId, setSelectedListId] = useSelectedListContext();
   const {getList, updateList, deleteList, createItem} = useList(selectedListId);
@@ -51,9 +53,15 @@ const ListContainer = () => {
     });
   };
 
-  const itemElements = getList.data.items
-      .sort((a, b) => a.id - b.id)
-      .map(item => <ListItem key={"list-item-" + item.id} item={item} />);
+  const itemElements = (
+      <ul className={styles["list"]}>
+        {
+          getList.data.items
+          .sort((a, b) => a.id - b.id)
+          .map(item => <ListItem key={"list-item-" + item.id} item={item} />)
+        }
+      </ul>
+  );
 
   return (
       <div className={styles["page-content"]}>
@@ -69,9 +77,7 @@ const ListContainer = () => {
           </div>
           <DeleteButton onClick={handleDeleteList} />
         </div>
-        <ul className={styles["shopping-list"]}>
-          {itemElements}
-        </ul>
+        {getList.data.items.length > 0 && itemElements || NO_ITEMS_DISPLAY}
         <div className={styles["button-wrapper"]}>
           <Button
               label={"New Item"}
@@ -79,7 +85,6 @@ const ListContainer = () => {
           />
         </div>
       </div>
-
   );
 };
 
